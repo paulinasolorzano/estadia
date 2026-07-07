@@ -181,6 +181,8 @@ hr.dv{border:none;border-top:1px solid var(--borde);margin:44px 0;}
 /* ── CTA BUTTON ── */
 .cta-btn{display:inline-flex;align-items:center;gap:9px;background:var(--v);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:800;padding:13px 26px;border-radius:10px;border:none;cursor:pointer;transition:background .2s;margin:10px 0;}
 .cta-btn:hover{background:var(--vm);}
+.mini-link{display:inline-flex;align-items:center;justify-content:center;background:var(--vs);color:var(--v);border:1px solid var(--vb);border-radius:7px;padding:5px 10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap;}
+.mini-link:hover{background:#d8eddf;}
 
 /* ── FOOTER ── */
 footer{background:#111827;color:rgba(255,255,255,.6);text-align:center;padding:32px 20px;font-size:.9rem;}
@@ -199,6 +201,7 @@ footer strong{color:#fff;}
 <nav class="tabs-bar" id="tabs-bar">
   <button class="tab-btn active"  data-tab="inicio"      onclick="showTab('inicio')">🏠 Inicio</button>
   <button class="tab-btn"         data-tab="contenidos"  onclick="showTab('contenidos')">📑 Contenidos</button>
+  <button class="tab-btn"         data-tab="tiempos"     onclick="showTab('tiempos')">⏱️ Tiempos verbales</button>
   <button class="tab-btn"         data-tab="cap1"        onclick="showTab('cap1')">📖 Cap. I · Introducción</button>
   <button class="tab-btn"         data-tab="cap2"        onclick="showTab('cap2')">🔬 Cap. II · Descripción</button>
   <button class="tab-btn"         data-tab="cap3"        onclick="showTab('cap3')">🏆 Cap. III · Resultados</button>
@@ -222,6 +225,7 @@ footer strong{color:#fff;}
         <span class="chip">✍️ APA 7.ª edición</span>
         <span class="chip">🚫 Prevención de plagio</span>
         <span class="chip">📐 Formato y márgenes</span>
+        <span class="chip">⏱️ Tiempos verbales</span>
         <span class="chip">💡 Ejemplos por sección</span>
       </div>
     </div>
@@ -256,6 +260,7 @@ footer strong{color:#fff;}
       <p class="bd">Usa las pestañas de la barra superior para navegar entre las secciones. Cada pestaña cubre una parte específica del reporte con explicaciones y ejemplos.</p>
       <div class="cgrid">
         <div class="csm"><div class="ico">📑</div><h4>Contenidos</h4><p>Mapa visual de la estructura completa y extensión por sección.</p></div>
+        <div class="csm"><div class="ico">⏱️</div><h4>Tiempos verbales</h4><p>Cómo redactar introducción, justificación, desarrollo, resultados y conclusiones.</p></div>
         <div class="csm"><div class="ico">📖</div><h4>Cap. I · Introducción</h4><p>Contexto, situación, alternativas, objetivos y justificación con ejemplos.</p></div>
         <div class="csm"><div class="ico">🔬</div><h4>Cap. II · Descripción</h4><p>Bases teóricas (cómo citar en 2.1), cronograma y desarrollo.</p></div>
         <div class="csm"><div class="ico">🏆</div><h4>Cap. III · Resultados</h4><p>Cómo documentar el producto final con evidencias.</p></div>
@@ -273,7 +278,7 @@ footer strong{color:#fff;}
   <div class="panel-body">
     <span class="sec-label">📑 Mapa general</span>
     <h2 class="st">Contenidos del Reporte Técnico</h2>
-    <p class="bd">Estructura completa del documento conforme a la guía oficial UTM 2025. Haz clic en cualquier tarjeta para ir a la explicación detallada con ejemplos.</p>
+    <p class="bd">Estructura completa del documento conforme a la guía oficial UTM 2025. Haz clic en cualquier tarjeta para ir a la explicación detallada con ejemplos y consulta los tiempos verbales recomendados para redactar cada sección con mayor claridad.</p>
 
     <div class="toc-grid">
       <div class="toc-c" onclick="showTab('cap1')">
@@ -284,6 +289,16 @@ footer strong{color:#fff;}
           <li>Índice de Figuras</li>
           <li>Índice de Tablas (si aplica)</li>
           <li>Resumen / Abstract (Página 1)</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('tiempos')">
+        <div class="toc-h"><div class="ico">⏱️</div><div><h3>Tiempos Verbales</h3><span>Cómo redactar cada apartado</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Presente para introducción y justificación</li>
+          <li>Infinitivo para objetivos</li>
+          <li>Pasado para desarrollo</li>
+          <li>Pasado + presente para resultados y conclusiones</li>
+          <li>Ejemplos listos para revisar</li>
         </ul></div>
       </div>
       <div class="toc-c" onclick="showTab('cap1')">
@@ -347,7 +362,7 @@ footer strong{color:#fff;}
       <div class="toc-c" onclick="showTab('checklist')">
         <div class="toc-h"><div class="ico">✅</div><div><h3>Checklist Final</h3><span>Revisión antes de entregar</span></div></div>
         <div class="toc-b"><ul>
-          <li>30 puntos interactivos verificables</li>
+          <li>31 puntos interactivos verificables</li>
           <li>Archivo, estructura y formato</li>
           <li>Citas, figuras y paginación</li>
           <li>Barra de progreso en tiempo real</li>
@@ -373,6 +388,104 @@ footer strong{color:#fff;}
 </div>
 
 <!-- ═══════════════════════════════════════
+     PANEL: TIEMPOS VERBALES
+═══════════════════════════════════════ -->
+<div id="panel-tiempos" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">⏱️ Redacción académica</span>
+    <h2 class="st">Tiempos Verbales Recomendados</h2>
+    <p class="bd">Como el Reporte Técnico final de TSU documenta un proyecto ya realizado, cada sección debe usar el tiempo verbal adecuado. Esto evita mezclar ideas futuras, actividades ya terminadas y afirmaciones generales.</p>
+    <div class="info"><p>📌 <strong>Recomendación para revisar reportes técnicos finales de TSU:</strong> introducción y justificación se redactan principalmente en presente; objetivos en infinitivo; desarrollo en pasado; resultados y conclusiones combinan pasado y presente.</p></div>
+
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">📋 Tabla de tiempos verbales</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>📌 Sección</th>
+            <th>⏱️ Tiempo verbal recomendado</th>
+            <th>✍️ Ejemplo breve</th>
+            <th>🔗 Vínculo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Introducción</strong></td>
+            <td>Presente y ocasionalmente pasado</td>
+            <td>El presente reporte describe el desarrollo de un sistema web. La estadía se realizó en el área de desarrollo de la empresa.</td>
+            <td><button class="mini-link" onclick="showTab('cap1')">Cap. I</button></td>
+          </tr>
+          <tr>
+            <td><strong>Justificación</strong></td>
+            <td>Presente</td>
+            <td>El proyecto permite reducir errores de registro y mejora el control de inventario de la unidad productiva.</td>
+            <td><button class="mini-link" onclick="showTab('cap1')">Justificación</button></td>
+          </tr>
+          <tr>
+            <td><strong>Objetivos</strong></td>
+            <td>Infinitivo</td>
+            <td>Desarrollar un sistema web para automatizar el registro, consulta y control de productos.</td>
+            <td><button class="mini-link" onclick="showTab('cap1')">Objetivos</button></td>
+          </tr>
+          <tr>
+            <td><strong>Desarrollo</strong></td>
+            <td>Pasado</td>
+            <td>Se levantaron los requerimientos, se diseñó la base de datos y se implementaron los módulos principales.</td>
+            <td><button class="mini-link" onclick="showTab('cap2')">Desarrollo</button></td>
+          </tr>
+          <tr>
+            <td><strong>Resultados</strong></td>
+            <td>Pasado + presente</td>
+            <td>El sistema fue implementado correctamente y actualmente permite consultar existencias en tiempo real.</td>
+            <td><button class="mini-link" onclick="showTab('cap3')">Resultados</button></td>
+          </tr>
+          <tr>
+            <td><strong>Conclusiones</strong></td>
+            <td>Pasado + presente</td>
+            <td>El objetivo general se cumplió y la experiencia fortalece la formación profesional del estudiante.</td>
+            <td><button class="mini-link" onclick="showTab('cap3')">Cierre</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <h3 class="sh" style="margin-top:0;">✅ Cómo decidir el tiempo verbal</h3>
+        <ul class="ul">
+          <li>Usa <strong>presente</strong> para explicar importancia, utilidad, contexto vigente o funcionamiento actual.</li>
+          <li>Usa <strong>pasado</strong> para describir actividades ya realizadas durante la estadía.</li>
+          <li>Usa <strong>infinitivo</strong> en objetivos: analizar, diseñar, desarrollar, implementar, validar.</li>
+          <li>Evita redactar todo en futuro, porque el reporte final documenta un proyecto concluido.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="sh" style="margin-top:0;">🚫 Error común</h3>
+        <p class="bd">Mezclar futuro con pasado debilita la redacción. En lugar de escribir "se desarrollará un sistema", en el reporte final debe escribirse "se desarrolló un sistema" o "el sistema permite", según la idea que se quiera comunicar.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">✏️ Ejemplo integrado</h3>
+      <p class="bd">El siguiente ejemplo muestra cómo cambian los tiempos verbales según la sección del reporte.</p>
+      <div class="apa-w">
+        <div class="apa-lbl">Introducción · presente + pasado</div>
+        <div class="apa-ej">El presente reporte describe el desarrollo de un sistema web para la gestión de inventarios. La estadía se realizó en el Departamento de Desarrollo de Soluciones Digitales Michoacán, donde se identificó la necesidad de automatizar el registro de productos.</div>
+        <div class="apa-lbl">Desarrollo · pasado</div>
+        <div class="apa-ej">Durante la etapa de desarrollo se levantaron los requerimientos funcionales, se diseñó el modelo de base de datos y se implementaron los módulos de registro, consulta y actualización de productos.</div>
+        <div class="apa-lbl">Resultados · pasado + presente</div>
+        <div class="apa-ej">El sistema fue implementado satisfactoriamente y actualmente permite consultar existencias en tiempo real, reduciendo el tiempo de búsqueda de información dentro del área de almacén.</div>
+      </div>
+      <div class="tip"><p>💡 Observa que el pasado documenta lo realizado y el presente explica la utilidad actual del proyecto.</p></div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="cta-btn" onclick="showTab('cap1')">Empezar con Cap. I · Introducción →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
      PANEL: CAP I
 ═══════════════════════════════════════ -->
 <div id="panel-cap1" class="panel">
@@ -380,6 +493,19 @@ footer strong{color:#fff;}
     <span class="sec-label">📖 Capítulo I</span>
     <h2 class="st"><span class="n">I.</span> Introducción</h2>
     <p class="bd">La introducción proporciona una visión general del trabajo realizado. Debe <strong>establecer el propósito del reporte</strong> y <strong>familiarizar al lector con el proyecto</strong>. Contiene 5 apartados obligatorios.</p>
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗓️ Semanas sugeridas de trabajo</h3>
+      <table>
+        <thead><tr><th>Semana</th><th>Avance recomendado</th><th>Producto esperado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Semana 1</strong></td><td>Recopilar datos de la empresa y del área asignada.</td><td>1.1 Contexto del trabajo.</td></tr>
+          <tr><td><strong>Semana 2</strong></td><td>Identificar el problema, causas y alternativas de solución.</td><td>1.2 Situación actual y 1.3 Alternativas.</td></tr>
+          <tr><td><strong>Semana 3</strong></td><td>Definir alcance, objetivo general, objetivos específicos y aportes del proyecto.</td><td>1.4 Objetivos y 1.5 Justificación.</td></tr>
+          <tr><td><strong>Semana 4</strong></td><td>Revisar redacción con asesor académico y ajustar coherencia entre problema, objetivos y justificación.</td><td>Capítulo I integrado y listo para revisión.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info"><p>⏱️ <strong>Tiempo verbal sugerido:</strong> redacta la introducción principalmente en presente, con pasado solo cuando menciones acciones ya realizadas durante la estadía. <button class="mini-link" onclick="showTab('tiempos')">Ver tiempos verbales</button></p></div>
 
     <!-- FORMATO -->
     <div class="card" style="background:var(--v);border:none;">
@@ -484,6 +610,18 @@ footer strong{color:#fff;}
   <div class="panel-body">
     <span class="sec-label">🔬 Capítulo II</span>
     <h2 class="st"><span class="n">II.</span> Descripción del Trabajo</h2>
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗓️ Semanas sugeridas de trabajo</h3>
+      <table>
+        <thead><tr><th>Semana</th><th>Avance recomendado</th><th>Producto esperado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Semanas 2–5</strong></td><td>Investigar conceptos, metodologías, herramientas y tecnologías del proyecto.</td><td>2.1 Bases teóricas con citas APA y referencias preliminares.</td></tr>
+          <tr><td><strong>Semana 3</strong></td><td>Organizar actividades, fechas, responsables, recursos y dependencias.</td><td>2.2 Cronograma o Diagrama de Gantt.</td></tr>
+          <tr><td><strong>Semanas 4–10</strong></td><td>Documentar el proceso real de análisis, diseño, desarrollo, pruebas y ajustes.</td><td>2.3 Desarrollo de tareas y actividades.</td></tr>
+          <tr><td><strong>Semana 10</strong></td><td>Revisar que el capítulo explique el proceso sin adelantar los resultados finales.</td><td>Capítulo II completo para revisión.</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- 2.1 BASES TEÓRICAS -->
     <div class="card">
@@ -495,11 +633,34 @@ footer strong{color:#fff;}
       <ul class="ul">
         <li><strong>Conceptos fundamentales</strong> del dominio (API REST, base de datos relacional, IoT, seguridad, etc.)</li>
         <li><strong>Metodología de desarrollo</strong> usada: Scrum, Kanban, RUP o Cascada, con sus fases</li>
-        <li><strong>Tecnologías y herramientas</strong> del stack, justificando la elección frente a alternativas</li>
+        <li><strong>Tecnologías y herramientas</strong> del stack, explicando qué son, cómo funcionan y por qué fueron seleccionadas</li>
         <li><strong>Patrones de diseño</strong> aplicados (MVC, MVVM, Repository, etc.)</li>
         <li><strong>Estándares</strong> seguidos (ISO, IEEE, WCAG, OWASP) si aplica</li>
         <li>Para Ingeniería: <strong>estado del arte</strong> y trabajos relacionados</li>
       </ul>
+
+      <div class="info"><p>📚 <strong>Regla de calidad para 2.1:</strong> cada concepto técnico debe tener una fuente confiable, una explicación con tus palabras y una relación directa con el proyecto. No basta con copiar definiciones de internet.</p></div>
+
+      <h4 class="s4">🧭 Preguntas que debe responder cada tecnología</h4>
+      <table>
+        <thead><tr><th>Pregunta guía</th><th>Qué debe redactar el alumno</th></tr></thead>
+        <tbody>
+          <tr><td><strong>¿Qué es?</strong></td><td>Definición clara con cita APA de una fuente confiable.</td></tr>
+          <tr><td><strong>¿Cómo funciona?</strong></td><td>Explicación del mecanismo principal, arquitectura o proceso básico.</td></tr>
+          <tr><td><strong>¿Cuáles son sus características técnicas?</strong></td><td>Funciones, componentes, requisitos, compatibilidad o forma de uso.</td></tr>
+          <tr><td><strong>¿Qué ventajas ofrece?</strong></td><td>Beneficios concretos para el desarrollo del proyecto.</td></tr>
+          <tr><td><strong>¿Por qué fue seleccionada?</strong></td><td>Justificación frente a alternativas posibles.</td></tr>
+          <tr><td><strong>¿Qué limitaciones tiene?</strong></td><td>Riesgos, restricciones o aspectos que se deben cuidar.</td></tr>
+          <tr><td><strong>¿Cómo se relaciona con las demás tecnologías?</strong></td><td>Conexión con base de datos, backend, frontend, API, servidor o metodología.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción mejorada</div>
+        <div class="apa-ej"><strong>Node.js.</strong> Node.js es un entorno de ejecución que permite utilizar JavaScript del lado del servidor y trabajar con operaciones de entrada y salida orientadas a eventos (Node.js Foundation, 2024). En este proyecto se empleó para construir el backend del sistema, ya que facilita la creación de servicios web y la atención de múltiples solicitudes de forma eficiente. Su principal ventaja fue la integración con Express.js y con el ecosistema de paquetes npm; sin embargo, se consideró necesario cuidar la validación de datos y el manejo de errores para evitar fallas en las rutas de la API.</div>
+      </div>
+
+      <div class="alerta"><p>⚠️ <strong>Evita esto:</strong> párrafos que solo dicen "Node.js es..." o "Express.js es..." sin cita, sin explicación propia y sin relación con el proyecto. El fundamento teórico debe demostrar comprensión, no acumulación de definiciones.</p></div>
 
       <hr class="dv">
 
@@ -508,14 +669,27 @@ footer strong{color:#fff;}
         <h3 class="sh" style="color:#fff;margin-top:0;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:14px;margin-bottom:18px;">
           ✍️ ¿Cómo citar en el apartado 2.1?
         </h3>
-        <p style="color:rgba(255,255,255,.9);font-size:1rem;font-weight:500;margin-bottom:18px;">Usa el sistema autor–año de APA dentro del texto. Aquí están los casos más frecuentes en bases teóricas:</p>
+        <p style="color:rgba(255,255,255,.9);font-size:1rem;font-weight:500;margin-bottom:18px;">Usa el sistema autor–año de APA dentro del texto. La cita no debe aparecer aislada: primero explica la idea, después intégrala al proyecto y finalmente conserva la referencia completa en la lista final.</p>
+
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;margin-bottom:14px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">🔎 Fuentes confiables para 2.1</div>
+          <table style="margin:0;font-size:.9rem;">
+            <thead><tr><th>Sí se recomienda</th><th>Evitar o usar solo como apoyo</th></tr></thead>
+            <tbody>
+              <tr><td>Libros académicos o técnicos</td><td>Blogs sin autor ni fecha</td></tr>
+              <tr><td>Artículos científicos o memorias de congreso</td><td>Wikipedia como fuente principal</td></tr>
+              <tr><td>Documentación oficial de tecnologías</td><td>Videos sin respaldo documental</td></tr>
+              <tr><td>Normas, manuales y sitios institucionales</td><td>Apuntes compartidos sin datos bibliográficos</td></tr>
+            </tbody>
+          </table>
+        </div>
 
         <!-- PARÁFRASIS -->
         <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;margin-bottom:14px;">
           <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">💭 Paráfrasis (lo más común en 2.1)</div>
           <p style="color:rgba(255,255,255,.85);font-size:.93rem;margin-bottom:10px;">Explicas la idea de otro autor con tus propias palabras. <strong style="color:#a8e6c0;">Siempre debes citar aunque no copies literalmente.</strong></p>
           <div style="background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);border-radius:8px;padding:13px 16px;font-family:'Georgia',serif;font-size:.95rem;color:#e8f5ee;line-height:1.8;">
-            React.js es una biblioteca de JavaScript para construir interfaces de usuario mediante componentes reutilizables. Su uso del Virtual DOM optimiza el rendimiento al actualizar únicamente los elementos que cambiaron en la interfaz (Larsen, 2022, p. 45).
+            React.js permite construir interfaces mediante componentes reutilizables, lo que facilita separar la lógica visual en partes pequeñas y mantenibles (React Team, 2023). En el proyecto se seleccionó para desarrollar la interfaz del usuario porque permitió organizar formularios, tablas y vistas de consulta de manera modular.
           </div>
         </div>
 
@@ -555,6 +729,8 @@ footer strong{color:#fff;}
 
       <div class="alerta"><p>⚠️ <strong>Obligatorio:</strong> Todo concepto tomado de una fuente debe citarse. Omitir la cita, aunque hayas parafraseado, constituye <strong>plagio académico</strong>.</p></div>
 
+      <div class="tip"><p>💡 <strong>Antes de entregar 2.1:</strong> revisa que cada tecnología tenga al menos una cita en el texto, que esa cita aparezca en Referencias y que el párrafo explique por qué esa tecnología aporta al proyecto.</p></div>
+
       <h4 class="s4">📋 Estructura sugerida del fundamento teórico</h4>
       <div class="steps">
         <div class="si"><div class="sn"></div><div class="sb"><strong>Introducción al marco teórico</strong><p>Párrafo breve que indica qué temas se abordan y por qué son relevantes para el proyecto.</p></div></div>
@@ -579,7 +755,9 @@ footer strong{color:#fff;}
         <li>Señalar actividades <strong>predecesoras y sucesoras</strong></li>
         <li>Cubrir desde el inicio hasta el fin de la estadía completa</li>
       </ul>
+      <div class="info"><p>⏱️ <strong>Redacción:</strong> el cronograma puede explicarse en presente si describe la organización del plan, pero las actividades realizadas en 2.3 deben redactarse en pasado.</p></div>
       <div class="tip"><p>💡 <strong>Herramientas:</strong> Microsoft Project · GanttProject (gratuito) · Trello con vista de línea de tiempo · Tabla Word/Excel con columnas requeridas.</p></div>
+      <button class="mini-link" onclick="showTab('tiempos')">Ver tiempos verbales</button>
     </div>
 
     <!-- 2.3 -->
@@ -628,6 +806,17 @@ footer strong{color:#fff;}
   <div class="panel-body">
     <span class="sec-label">🏆 Capítulo III + Conclusiones</span>
     <h2 class="st"><span class="n">III.</span> Resultados y Conclusiones</h2>
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗓️ Semanas sugeridas de trabajo</h3>
+      <table>
+        <thead><tr><th>Semana</th><th>Avance recomendado</th><th>Producto esperado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Semanas 10–11</strong></td><td>Reunir evidencias del producto final: capturas, pruebas, métricas y validaciones.</td><td>Capítulo III con resultados documentados.</td></tr>
+          <tr><td><strong>Semana 12</strong></td><td>Relacionar resultados con objetivos y describir el impacto del proyecto.</td><td>Resultados revisados y alineados al Capítulo I.</td></tr>
+          <tr><td><strong>Última semana</strong></td><td>Redactar conclusiones, recomendaciones, anexos y revisar referencias finales.</td><td>Conclusiones, referencias y anexos listos para entrega.</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="card">
       <h3 class="sh" style="margin-top:0;">🏆 Capítulo III · Resultados</h3>
@@ -880,7 +1069,7 @@ footer strong{color:#fff;}
     <div style="background:var(--vs);border:1px solid var(--vb);border-radius:12px;padding:20px 24px;margin-bottom:32px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:1.05rem;font-weight:700;color:var(--v);">📊 Progreso de revisión</span>
-        <span id="chk-count" style="font-size:1.15rem;font-weight:800;color:var(--v);">0 / 30</span>
+        <span id="chk-count" style="font-size:1.15rem;font-weight:800;color:var(--v);">0 / 31</span>
       </div>
       <div style="background:#c2e0ce;border-radius:10px;height:16px;overflow:hidden;">
         <div id="chk-bar" style="background:var(--v);height:100%;width:0%;transition:width .3s;border-radius:10px;"></div>
@@ -904,6 +1093,7 @@ footer strong{color:#fff;}
       <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Índice de Figuras completo (si hay figuras)</div></div>
       <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Índice de Tablas completo (si hay tablas)</div></div>
       <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Resumen / Abstract como <strong>Página 1</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Tiempos verbales revisados: presente, pasado e infinitivo se usaron según la sección</div></div>
       <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Capítulo I completo: apartados 1.1 a 1.5</div></div>
       <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Capítulo II: bases teóricas, cronograma y desarrollo</div></div>
       <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Capítulo III con evidencias del producto final</div></div>
@@ -970,7 +1160,7 @@ window.addEventListener('scroll', function(){
   document.getElementById('prog').style.width = pct + '%';
 });
 
-var CHK_TOTAL = 30;
+var CHK_TOTAL = 31;
 function toggleCk(el){
   el.classList.toggle('done');
   el.innerHTML = el.classList.contains('done') ? '&#10003;' : '';
