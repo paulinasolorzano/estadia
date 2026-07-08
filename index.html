@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Técnico de Estadía · UTM</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#047857;--vm:#059669;--vc:#34d399;--vs:#ecfdf5;--vb:#a7f3d0;
+  --r:#c0392b;--y:#e6b800;--go:#111827;--gm:#374151;--gt:#4b5563;
+  --gc:#f3f4f6;--w:#fff;--borde:#c7f0dc;--sh:0 4px 24px rgba(4,120,87,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f5f7f5;color:var(--go);font-size:17px;line-height:1.78;}
+
+/* ── PROGRESS ── */
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--vc);width:0;z-index:2000;transition:width .1s;}
+
+/* ── HEADER compacto ── */
+.site-header{background:var(--v);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.site-logo{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:800;color:#fff;white-space:nowrap;}
+.site-logo span{color:#a8e6c0;}
+
+/* ── TABS BARRA ── */
+.tabs-bar{background:#065f46;display:flex;overflow-x:auto;gap:0;border-bottom:1px solid rgba(255,255,255,.1);}
+.tab-btn{
+  background:transparent;border:none;
+  color:rgba(255,255,255,.7);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.97rem;font-weight:700;
+  padding:15px 22px;cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:all .18s;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+}
+.tab-btn:hover{color:#fff;background:rgba(255,255,255,.07);}
+.tab-btn.active{color:#fff;border-bottom-color:#a8e6c0;background:rgba(255,255,255,.1);}
+
+/* ── HERO — solo intro, no pantalla completa ── */
+.hero{
+  background:linear-gradient(135deg,#10b981 0%,#047857 100%);
+  color:#fff;padding:52px 40px 48px;
+  position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.04);}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:30px;padding:5px 16px;font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:18px;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;line-height:1.12;color:#fff;margin-bottom:16px;}
+.hero h1 em{color:#a8e6c0;font-style:normal;}
+.hero-sub{font-size:1.05rem;font-weight:500;color:rgba(255,255,255,.88);max-width:620px;margin-bottom:28px;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:6px 14px;font-size:.9rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;}
+
+/* ── OBJ BANNER ── */
+.obj-banner{background:var(--v);padding:22px 40px;}
+.obj-inner{max-width:860px;margin:0 auto;display:flex;gap:16px;align-items:flex-start;}
+.obj-inner .ico{font-size:2rem;flex-shrink:0;}
+.obj-inner h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#a8e6c0;margin-bottom:5px;}
+.obj-inner p{font-size:1rem;font-weight:500;color:#fff;line-height:1.65;}
+
+/* ── PANELS ── */
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-body{max-width:960px;margin:0 auto;padding:44px 32px;}
+@media(max-width:640px){.panel-body{padding:28px 16px;}}
+
+/* ── SECCIONES ── */
+.sec{margin-bottom:60px;}
+.sec-label{display:inline-flex;align-items:center;gap:6px;background:var(--vs);color:var(--v);border:1px solid var(--vb);font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+h2.st{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:800;color:var(--go);margin-bottom:18px;line-height:1.2;}
+h2.st .n{color:var(--v);}
+h3.sh{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:700;color:var(--v);margin:30px 0 12px;display:flex;align-items:center;gap:10px;}
+h4.s4{font-size:.95rem;font-weight:800;color:var(--go);text-transform:uppercase;letter-spacing:.05em;margin:22px 0 8px;display:flex;align-items:center;gap:8px;}
+p.bd{color:var(--gt);font-size:1.02rem;margin-bottom:14px;line-height:1.78;}
+p.bd strong{color:var(--go);font-weight:700;}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid var(--borde);border-radius:14px;padding:26px 30px;margin-bottom:18px;box-shadow:var(--sh);}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:22px;}
+.csm{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:20px 22px;box-shadow:var(--sh);}
+.csm .ico{font-size:1.9rem;margin-bottom:9px;}
+.csm h4{font-size:.97rem;font-weight:700;color:var(--go);margin-bottom:5px;}
+.csm p{font-size:.88rem;color:var(--gt);margin:0;line-height:1.6;}
+
+/* ── ALERTAS ── */
+.tip{background:#fffceb;border:1px solid #f0d34a;border-left:5px solid var(--y);border-radius:10px;padding:16px 20px;margin:16px 0;}
+.tip p{color:#5a4200;font-size:.97rem;font-weight:500;}
+.alerta{background:#fff5f5;border:1px solid #f5bfbf;border-left:5px solid var(--r);border-radius:10px;padding:16px 20px;margin:16px 0;}
+.alerta p{color:#7a1a1a;font-size:.97rem;font-weight:500;}
+.info{background:var(--vs);border:1px solid var(--vb);border-left:5px solid var(--v);border-radius:10px;padding:16px 20px;margin:16px 0;}
+.info p{color:#1a4228;font-size:.97rem;font-weight:500;}
+.info strong{color:var(--v);}
+
+/* ── TABLA ── */
+table{width:100%;border-collapse:collapse;font-size:.97rem;margin:16px 0 26px;border-radius:12px;overflow:hidden;border:1px solid var(--borde);box-shadow:var(--sh);}
+thead{background:var(--v);}
+thead th{padding:13px 15px;text-align:left;font-weight:800;font-size:.92rem;color:#fff;}
+tbody tr:nth-child(even){background:#f7fbf8;}
+tbody td{padding:12px 15px;color:var(--gt);border-bottom:1px solid var(--borde);font-size:.97rem;vertical-align:top;}
+tbody td strong{color:var(--go);font-weight:700;}
+
+/* ── ESTRUCTURA ── */
+.est{border:1px solid var(--borde);border-radius:14px;overflow:hidden;margin:18px 0;}
+.ei{display:flex;align-items:flex-start;gap:16px;padding:16px 22px;border-bottom:1px solid var(--borde);transition:background .15s;}
+.ei:last-child{border-bottom:none;}
+.ei:hover{background:var(--vs);}
+.en{width:38px;height:38px;background:var(--v);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;flex-shrink:0;margin-top:2px;}
+.en.opt{background:#9dbfad;}
+.et strong{display:block;font-size:.98rem;font-weight:700;color:var(--go);margin-bottom:2px;}
+.et span{font-size:.87rem;color:#666;line-height:1.5;}
+
+/* ── LISTAS ── */
+ul.ul,ol.ol{padding-left:22px;margin-bottom:14px;}
+ul.ul li,ol.ol li{color:var(--gt);margin-bottom:7px;font-size:1rem;}
+ul.ul li strong,ol.ol li strong{color:var(--go);font-weight:700;}
+
+/* ── APA BLOQUES ── */
+.apa-w{background:#f8faf9;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;margin:12px 0 20px;}
+.apa-lbl{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--v);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.apa-fmt{font-family:'Georgia',serif;font-size:.98rem;color:#1f2937;line-height:1.8;background:#fff;border:1px dashed var(--vb);border-radius:8px;padding:13px 16px;margin-bottom:9px;}
+.apa-ej{font-family:'Georgia',serif;font-size:.95rem;color:#1a3a28;line-height:1.8;background:var(--vs);border:1px solid var(--vb);border-radius:8px;padding:13px 16px;}
+
+/* ── STEPS ── */
+.steps{counter-reset:st;}
+.si{display:flex;gap:16px;margin-bottom:22px;}
+.sn{counter-increment:st;width:38px;height:38px;background:var(--v);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;margin-top:3px;}
+.sn::before{content:counter(st);}
+.sb strong{display:block;font-size:1rem;font-weight:700;color:var(--go);margin-bottom:4px;}
+.sb p{font-size:.93rem;color:var(--gt);margin:0;line-height:1.65;}
+
+/* ── 2 COLS ── */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+@media(max-width:600px){.two{grid-template-columns:1fr;}}
+
+/* ── TAGS ── */
+.tv{display:inline-block;background:var(--vs);color:var(--v);border:1px solid var(--vb);border-radius:5px;padding:1px 9px;font-size:.8rem;font-weight:700;}
+.tr{display:inline-block;background:#fff0f0;color:var(--r);border:1px solid #f5bfbf;border-radius:5px;padding:1px 9px;font-size:.8rem;font-weight:700;}
+
+/* ── TOC CARDS ── */
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-top:22px;}
+.toc-c{background:#fff;border:1px solid var(--borde);border-radius:14px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.toc-c:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(20,92,50,.14);}
+.toc-h{background:var(--v);padding:18px 22px;display:flex;align-items:center;gap:12px;}
+.toc-h .ico{font-size:1.7rem;}
+.toc-h h3{font-family:'Fraunces',serif;font-size:1.08rem;font-weight:700;color:#fff;margin:0;line-height:1.3;}
+.toc-h span{font-size:.8rem;font-weight:700;color:rgba(255,255,255,.75);display:block;margin-top:2px;}
+.toc-b{padding:18px 22px;}
+.toc-b ul{list-style:none;padding:0;margin:0;}
+.toc-b ul li{font-size:.93rem;color:var(--gt);padding:6px 0;border-bottom:1px solid #eef1ee;display:flex;align-items:flex-start;gap:9px;}
+.toc-b ul li:last-child{border-bottom:none;}
+.toc-b ul li::before{content:'▸';color:var(--vc);font-size:.8rem;margin-top:3px;flex-shrink:0;}
+
+/* ── APA SECTION BLOCKS ── */
+.ab{margin-bottom:44px;}
+.ab-head{background:var(--v);border-radius:12px 12px 0 0;padding:20px 26px;display:flex;align-items:center;gap:14px;}
+.ab-head .ico{font-size:1.9rem;}
+.ab-head h3{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:#fff;margin:0;}
+.ab-head p{font-size:.88rem;font-weight:500;color:rgba(255,255,255,.82);margin:3px 0 0;}
+.ab-body{background:#fff;border:1px solid var(--borde);border-top:none;border-radius:0 0 12px 12px;padding:26px;}
+.aeb{margin-bottom:26px;}
+.aeb:last-child{margin-bottom:0;}
+.aeb-lbl{display:inline-flex;align-items:center;gap:6px;background:var(--v);color:#fff;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:5px 14px;border-radius:20px;margin-bottom:10px;}
+.aeb-desc{font-size:.97rem;color:var(--gt);margin-bottom:10px;font-weight:500;}
+.img-cite{border:2px dashed var(--vb);border-radius:10px;padding:16px 20px;background:var(--vs);display:flex;align-items:flex-start;gap:14px;margin:12px 0;}
+.img-cite .ico{font-size:2.5rem;flex-shrink:0;}
+.img-cite-t strong{display:block;font-size:.82rem;font-weight:800;color:var(--v);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.img-cite-t p{font-family:'Georgia',serif;font-size:.9rem;color:#1a3a28;margin:0;line-height:1.65;}
+
+/* ── CHECKLIST ── */
+.chi{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid #eee;}
+.chi:last-child{border-bottom:none;}
+.cb{width:26px;height:26px;border:2px solid var(--vb);border-radius:6px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px;font-size:1rem;user-select:none;}
+.cb.done{background:var(--v);border-color:var(--v);color:#fff;}
+.ct{font-size:1rem;color:var(--gt);line-height:1.6;}
+.ct strong{color:var(--go);font-weight:700;}
+
+hr.dv{border:none;border-top:1px solid var(--borde);margin:44px 0;}
+
+/* ── CTA BUTTON ── */
+.cta-btn{display:inline-flex;align-items:center;gap:9px;background:var(--v);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:800;padding:13px 26px;border-radius:10px;border:none;cursor:pointer;transition:background .2s;margin:10px 0;}
+.cta-btn:hover{background:var(--vm);}
+.mini-link{display:inline-flex;align-items:center;justify-content:center;background:var(--vs);color:var(--v);border:1px solid var(--vb);border-radius:7px;padding:5px 10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap;}
+.mini-link:hover{background:#d8eddf;}
+
+/* ── GANTT ── */
+.gantt{display:grid;grid-template-columns:180px repeat(12,52px);gap:4px;align-items:center;margin:18px 0 10px;overflow-x:auto;}
+.gantt div{min-height:34px;border-radius:6px;padding:6px 8px;font-size:.82rem;font-weight:700;display:flex;align-items:center;}
+.gantt .gh{background:var(--v);color:#fff;justify-content:center;}
+.gantt .gtask{background:#f0fdf4;color:var(--v);border:1px solid var(--vb);}
+.gantt .bar{background:linear-gradient(135deg,#34d399,#10b981);color:#064e3b;justify-content:center;border:1px solid #6ee7b7;}
+.gantt .empty{background:#f8fafc;border:1px solid #e5e7eb;}
+
+/* ── FOOTER ── */
+footer{background:#111827;color:rgba(255,255,255,.6);text-align:center;padding:32px 20px;font-size:.9rem;}
+footer strong{color:#fff;}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-logo">📘 UTM · <span>Reporte de Estadía</span></div>
+</header>
+
+<!-- TABS -->
+<nav class="tabs-bar" id="tabs-bar">
+  <button class="tab-btn active"  data-tab="inicio"      onclick="showTab('inicio')">🏠 Inicio</button>
+  <button class="tab-btn"         data-tab="contenidos"  onclick="showTab('contenidos')">📑 Contenidos</button>
+  <button class="tab-btn"         data-tab="tiempos"     onclick="showTab('tiempos')">⏱️ Tiempos verbales</button>
+  <button class="tab-btn"         data-tab="cap1"        onclick="showTab('cap1')">📖 Cap. I · Introducción</button>
+  <button class="tab-btn"         data-tab="cap2"        onclick="showTab('cap2')">🔬 Cap. II · Descripción</button>
+  <button class="tab-btn"         data-tab="cap3"        onclick="showTab('cap3')">🏆 Cap. III · Resultados</button>
+  <button class="tab-btn"         data-tab="apa"         onclick="showTab('apa')">✍️ Citas APA</button>
+  <button class="tab-btn"         data-tab="plagio"      onclick="showTab('plagio')">🚫 Plagio</button>
+  <button class="tab-btn"         data-tab="checklist"   onclick="showTab('checklist')">✅ Checklist</button>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     PANEL: INICIO
+═══════════════════════════════════════ -->
+<div id="panel-inicio" class="panel active">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">🎓 Universidad Tecnológica de Morelia · Subdirección TIC</div>
+      <h1>Cómo redactar tu<br><em>Reporte Técnico</em><br>de Estadía</h1>
+      <p class="hero-sub">Guía completa para estudiantes de <strong>TSU e Ingeniería</strong> en Desarrollo de Software Multiplataforma. Estructura oficial, formato UTM, citación APA 7.ª edición y buenas prácticas académicas.</p>
+      <div class="hero-chips">
+        <span class="chip">📋 Estructura oficial UTM</span>
+        <span class="chip">✍️ APA 7.ª edición</span>
+        <span class="chip">🚫 Prevención de plagio</span>
+        <span class="chip">📐 Formato y márgenes</span>
+        <span class="chip">⏱️ Tiempos verbales</span>
+        <span class="chip">💡 Ejemplos por sección</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="obj-banner">
+    <div class="obj-inner">
+      <div class="ico">🎯</div>
+      <div>
+        <h2>Objetivo del Tutorial</h2>
+        <p>Proporcionar a los estudiantes una guía con ejemplos reales para elaborar su Reporte Técnico de Estadía conforme a los lineamientos oficiales de la UTM, empleando correctamente la citación en formato APA 7.ª edición y evitando el plagio académico.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="sec">
+      <span class="sec-label">📌 Sobre este tutorial</span>
+      <h2 class="st">¿Qué es el Reporte Técnico de Estadía?</h2>
+      <p class="bd">El <strong>Reporte Técnico de Estadía</strong> es el documento académico-profesional que elaboras al concluir tu período de estadía en una unidad productiva. Es la evidencia oficial de tus competencias y el requisito obligatorio para obtener tu título.</p>
+
+      <div class="cgrid">
+        <div class="csm"><div class="ico">🎓</div><h4>Nivel TSU</h4><p>Fundamento teórico hasta 5 cuartillas. Evidencia del proyecto realizado en la empresa.</p></div>
+        <div class="csm"><div class="ico">⚙️</div><h4>Nivel Ingeniería</h4><p>Fundamento teórico de 10–15 páginas. Mayor profundidad en análisis y arquitectura.</p></div>
+        <div class="csm"><div class="ico">📚</div><h4>Uso académico</h4><p>Queda en biblioteca como referencia para futuras generaciones de estudiantes.</p></div>
+        <div class="csm"><div class="ico">📦</div><h4>4 PDF de entrega</h4><p>Biblioteca · Subdirección · Asesor Académico · Asesor Empresarial.</p></div>
+      </div>
+
+      <div class="info"><p>📁 <strong>Nombre del archivo:</strong> <code>Matricula_ApellidoPaterno_ApellidoMaterno_Nombre(s).pdf</code></p></div>
+
+      <h3 class="sh">🗺️ Cómo usar este tutorial</h3>
+      <p class="bd">Usa las pestañas de la barra superior para navegar entre las secciones. Cada pestaña cubre una parte específica del reporte con explicaciones y ejemplos.</p>
+      <div class="cgrid">
+        <div class="csm"><div class="ico">📑</div><h4>Contenidos</h4><p>Mapa visual de la estructura completa y extensión por sección.</p></div>
+        <div class="csm"><div class="ico">⏱️</div><h4>Tiempos verbales</h4><p>Cómo redactar introducción, justificación, desarrollo, resultados y conclusiones.</p></div>
+        <div class="csm"><div class="ico">📖</div><h4>Cap. I · Introducción</h4><p>Contexto, situación, alternativas, objetivos y justificación con ejemplos.</p></div>
+        <div class="csm"><div class="ico">🔬</div><h4>Cap. II · Descripción</h4><p>Bases teóricas, Gantt, requerimientos, diagramas, base de datos y temas adicionales.</p></div>
+        <div class="csm"><div class="ico">🏆</div><h4>Cap. III · Resultados</h4><p>Cómo documentar el producto final con evidencias.</p></div>
+        <div class="csm"><div class="ico">✍️</div><h4>Citas APA</h4><p>Todos los tipos de fuente con formato y ejemplos reales.</p></div>
+        <div class="csm"><div class="ico">✅</div><h4>Checklist</h4><p>Lista interactiva de verificación antes de entregar.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: CONTENIDOS
+═══════════════════════════════════════ -->
+<div id="panel-contenidos" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">📑 Mapa general</span>
+    <h2 class="st">Contenidos del Reporte Técnico</h2>
+    <p class="bd">Estructura completa del documento conforme a la guía oficial UTM 2025. Haz clic en cualquier tarjeta para ir a la explicación detallada con ejemplos y consulta los tiempos verbales recomendados para redactar cada sección con mayor claridad.</p>
+
+    <div class="toc-grid">
+      <div class="toc-c" onclick="showTab('cap1')">
+        <div class="toc-h"><div class="ico">📋</div><div><h3>Preliminares</h3><span>Portada e Índices</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Portada con logotipo de la empresa</li>
+          <li>Índice General paginado</li>
+          <li>Índice de Figuras</li>
+          <li>Índice de Tablas (si aplica)</li>
+          <li>Resumen / Abstract (Página 1)</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('tiempos')">
+        <div class="toc-h"><div class="ico">⏱️</div><div><h3>Tiempos Verbales</h3><span>Cómo redactar cada apartado</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Presente para introducción y justificación</li>
+          <li>Infinitivo para objetivos</li>
+          <li>Pasado para desarrollo</li>
+          <li>Pasado + presente para resultados y conclusiones</li>
+          <li>Ejemplos listos para revisar</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('cap1')">
+        <div class="toc-h"><div class="ico">🏢</div><div><h3>Cap. I · Introducción</h3><span>5 apartados clave</span></div></div>
+        <div class="toc-b"><ul>
+          <li>1.1 Contexto del trabajo</li>
+          <li>1.2 Análisis de la situación actual</li>
+          <li>1.3 Alternativas de solución</li>
+          <li>1.4 Objetivos general y específicos</li>
+          <li>1.5 Justificación del proyecto</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('cap2')">
+        <div class="toc-h"><div class="ico">🔬</div><div><h3>Cap. II · Descripción</h3><span>Marco teórico y desarrollo</span></div></div>
+        <div class="toc-b"><ul>
+          <li>2.1 Bases teóricas (con citas APA)</li>
+          <li>2.2 Cronograma — Diagrama de Gantt</li>
+          <li>2.3 Requerimientos funcionales y no funcionales</li>
+          <li>2.4 Diagramas del proceso</li>
+          <li>2.5 Diseño de la base de datos</li>
+          <li>2.6 Otros temas del proyecto</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('cap3')">
+        <div class="toc-h"><div class="ico">🏆</div><div><h3>Cap. III · Resultados</h3><span>Evidencia del proyecto</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Producto o servicio final</li>
+          <li>Capturas de pantalla / fotografías</li>
+          <li>Pruebas y métricas</li>
+          <li>Manuales (usuario / técnico)</li>
+          <li>Cumplimiento de objetivos</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('cap3')">
+        <div class="toc-h"><div class="ico">💬</div><div><h3>Conclusiones</h3><span>1–2 páginas de cierre</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Logros vs. objetivos planteados</li>
+          <li>Experiencia adquirida en la empresa</li>
+          <li>Recomendaciones a futuras generaciones</li>
+          <li>Trabajo pendiente / líneas futuras</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('apa')">
+        <div class="toc-h"><div class="ico">📚</div><div><h3>Referencias APA 7</h3><span>Lista bibliográfica</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Libros impresos y electrónicos</li>
+          <li>Artículos científicos con DOI</li>
+          <li>Páginas web y recursos en línea</li>
+          <li>Tesis y trabajos académicos</li>
+          <li>Orden alfabético · Sangría francesa</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('cap2')">
+        <div class="toc-h"><div class="ico">📐</div><div><h3>Formato Oficial UTM</h3><span>Márgenes, títulos, paginación</span></div></div>
+        <div class="toc-b"><ul>
+          <li>Márgenes 2.54 cm · Interlineado 1.5</li>
+          <li>Títulos: niveles 1, 2 y 3</li>
+          <li>Paginación con palabra "Página"</li>
+          <li>Encabezado y pie enmarcados</li>
+          <li>Figuras y tablas numeradas</li>
+        </ul></div>
+      </div>
+      <div class="toc-c" onclick="showTab('checklist')">
+        <div class="toc-h"><div class="ico">✅</div><div><h3>Checklist Final</h3><span>Revisión antes de entregar</span></div></div>
+        <div class="toc-b"><ul>
+          <li>31 puntos interactivos verificables</li>
+          <li>Archivo, estructura y formato</li>
+          <li>Citas, figuras y paginación</li>
+          <li>Barra de progreso en tiempo real</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <hr class="dv">
+    <h3 class="sh">📏 Extensión sugerida por sección</h3>
+    <table>
+      <thead><tr><th>📌 Sección</th><th>📄 TSU</th><th>🎓 Ingeniería</th><th>💡 Notas</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Cap. I Introducción</strong></td><td>3–5 págs.</td><td>5–8 págs.</td><td>Incluye los 5 apartados</td></tr>
+        <tr><td><strong>2.1 Bases teóricas</strong></td><td>Hasta 5 págs.</td><td>10–15 págs.</td><td>Mayor profundidad en Ingeniería</td></tr>
+        <tr><td><strong>2.2 Cronograma</strong></td><td>1–2 págs.</td><td>1–2 págs.</td><td>Preferentemente Gantt</td></tr>
+        <tr><td><strong>2.3 Requerimientos</strong></td><td>1–2 págs.</td><td>2–3 págs.</td><td>Funcionales y no funcionales</td></tr>
+        <tr><td><strong>2.4 Diagramas</strong></td><td>Variable</td><td>Variable</td><td>Flujo, casos de uso, proceso o arquitectura</td></tr>
+        <tr><td><strong>2.5 Base de datos</strong></td><td>1–3 págs.</td><td>2–4 págs.</td><td>Modelo entidad-relación y diccionario si aplica</td></tr>
+        <tr><td><strong>2.6 Otros temas</strong></td><td>Opcional</td><td>Opcional</td><td>Seguridad, pruebas, despliegue, API, manuales técnicos</td></tr>
+        <tr><td><strong>Cap. III Resultados</strong></td><td>Variable</td><td>Variable</td><td>Sección más extensa</td></tr>
+        <tr><td><strong>Conclusiones</strong></td><td>1–2 págs.</td><td>1–2 págs.</td><td>Logros, experiencia, recomendaciones</td></tr>
+        <tr><td><strong>Referencias</strong></td><td>Mín. 8 fuentes</td><td>Mín. 15 fuentes</td><td>Todas en APA 7.ª ed.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: TIEMPOS VERBALES
+═══════════════════════════════════════ -->
+<div id="panel-tiempos" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">⏱️ Redacción académica</span>
+    <h2 class="st">Tiempos Verbales Recomendados</h2>
+    <p class="bd">Como el Reporte Técnico final de TSU documenta un proyecto ya realizado, cada sección debe usar el tiempo verbal adecuado. Esto evita mezclar ideas futuras, actividades ya terminadas y afirmaciones generales.</p>
+    <div class="info"><p>📌 <strong>Recomendación para revisar reportes técnicos finales de TSU:</strong> introducción y justificación se redactan principalmente en presente; objetivos en infinitivo; desarrollo en pasado; resultados y conclusiones combinan pasado y presente.</p></div>
+
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">📋 Tabla de tiempos verbales</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>📌 Sección</th>
+            <th>⏱️ Tiempo verbal recomendado</th>
+            <th>✍️ Ejemplo breve</th>
+            <th>🔗 Vínculo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Introducción</strong></td>
+            <td>Presente y ocasionalmente pasado</td>
+            <td>El presente reporte describe el desarrollo de un sistema web. La estadía se realizó en el área de desarrollo de la empresa.</td>
+            <td><button class="mini-link" onclick="showTab('cap1')">Cap. I</button></td>
+          </tr>
+          <tr>
+            <td><strong>Justificación</strong></td>
+            <td>Presente</td>
+            <td>El proyecto permite reducir errores de registro y mejora el control de inventario de la unidad productiva.</td>
+            <td><button class="mini-link" onclick="showTab('cap1')">Justificación</button></td>
+          </tr>
+          <tr>
+            <td><strong>Objetivos</strong></td>
+            <td>Infinitivo</td>
+            <td>Desarrollar un sistema web para automatizar el registro, consulta y control de productos.</td>
+            <td><button class="mini-link" onclick="showTab('cap1')">Objetivos</button></td>
+          </tr>
+          <tr>
+            <td><strong>Desarrollo</strong></td>
+            <td>Pasado</td>
+            <td>Se levantaron los requerimientos, se diseñó la base de datos y se implementaron los módulos principales.</td>
+            <td><button class="mini-link" onclick="showTab('cap2')">Desarrollo</button></td>
+          </tr>
+          <tr>
+            <td><strong>Resultados</strong></td>
+            <td>Pasado + presente</td>
+            <td>El sistema fue implementado correctamente y actualmente permite consultar existencias en tiempo real.</td>
+            <td><button class="mini-link" onclick="showTab('cap3')">Resultados</button></td>
+          </tr>
+          <tr>
+            <td><strong>Conclusiones</strong></td>
+            <td>Pasado + presente</td>
+            <td>El objetivo general se cumplió y la experiencia fortalece la formación profesional del estudiante.</td>
+            <td><button class="mini-link" onclick="showTab('cap3')">Cierre</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <h3 class="sh" style="margin-top:0;">✅ Cómo decidir el tiempo verbal</h3>
+        <ul class="ul">
+          <li>Usa <strong>presente</strong> para explicar importancia, utilidad, contexto vigente o funcionamiento actual.</li>
+          <li>Usa <strong>pasado</strong> para describir actividades ya realizadas durante la estadía.</li>
+          <li>Usa <strong>infinitivo</strong> en objetivos: analizar, diseñar, desarrollar, implementar, validar.</li>
+          <li>Evita redactar todo en futuro, porque el reporte final documenta un proyecto concluido.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="sh" style="margin-top:0;">🚫 Error común</h3>
+        <p class="bd">Mezclar futuro con pasado debilita la redacción. En lugar de escribir "se desarrollará un sistema", en el reporte final debe escribirse "se desarrolló un sistema" o "el sistema permite", según la idea que se quiera comunicar.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">✏️ Ejemplo integrado</h3>
+      <p class="bd">El siguiente ejemplo muestra cómo cambian los tiempos verbales según la sección del reporte.</p>
+      <div class="apa-w">
+        <div class="apa-lbl">Introducción · presente + pasado</div>
+        <div class="apa-ej">El presente reporte describe el desarrollo de un sistema web para la gestión de inventarios. La estadía se realizó en el Departamento de Desarrollo de Soluciones Digitales Michoacán, donde se identificó la necesidad de automatizar el registro de productos.</div>
+        <div class="apa-lbl">Desarrollo · pasado</div>
+        <div class="apa-ej">Durante la etapa de desarrollo se levantaron los requerimientos funcionales, se diseñó el modelo de base de datos y se implementaron los módulos de registro, consulta y actualización de productos.</div>
+        <div class="apa-lbl">Resultados · pasado + presente</div>
+        <div class="apa-ej">El sistema fue implementado satisfactoriamente y actualmente permite consultar existencias en tiempo real, reduciendo el tiempo de búsqueda de información dentro del área de almacén.</div>
+      </div>
+      <div class="tip"><p>💡 Observa que el pasado documenta lo realizado y el presente explica la utilidad actual del proyecto.</p></div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="cta-btn" onclick="showTab('cap1')">Empezar con Cap. I · Introducción →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: CAP I
+═══════════════════════════════════════ -->
+<div id="panel-cap1" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">📖 Capítulo I</span>
+    <h2 class="st"><span class="n">I.</span> Introducción</h2>
+    <p class="bd">La introducción proporciona una visión general del trabajo realizado. Debe <strong>establecer el propósito del reporte</strong> y <strong>familiarizar al lector con el proyecto</strong>. Contiene 5 apartados obligatorios.</p>
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗓️ Semanas sugeridas de trabajo</h3>
+      <table>
+        <thead><tr><th>Semana</th><th>Avance recomendado</th><th>Producto esperado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Semana 1</strong></td><td>Recopilar datos de la empresa y del área asignada.</td><td>1.1 Contexto del trabajo.</td></tr>
+          <tr><td><strong>Semana 2</strong></td><td>Identificar el problema, causas y alternativas de solución.</td><td>1.2 Situación actual y 1.3 Alternativas.</td></tr>
+          <tr><td><strong>Semana 3</strong></td><td>Definir alcance, objetivo general, objetivos específicos y aportes del proyecto.</td><td>1.4 Objetivos y 1.5 Justificación.</td></tr>
+          <tr><td><strong>Semana 4</strong></td><td>Revisar redacción con asesor académico y ajustar coherencia entre problema, objetivos y justificación.</td><td>Capítulo I integrado y listo para revisión.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info"><p>⏱️ <strong>Tiempo verbal sugerido:</strong> redacta la introducción principalmente en presente, con pasado solo cuando menciones acciones ya realizadas durante la estadía. <button class="mini-link" onclick="showTab('tiempos')">Ver tiempos verbales</button></p></div>
+
+    <!-- FORMATO -->
+    <div class="card" style="background:var(--v);border:none;">
+      <h3 class="sh" style="color:#fff;margin-top:0;">📐 Formato oficial UTM</h3>
+      <table style="margin:0;">
+        <thead><tr><th>Elemento</th><th>Especificación</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:#fff;">Márgenes</strong></td><td>2.54 cm en los 4 lados — toda la hoja</td></tr>
+          <tr><td><strong style="color:#fff;">Interlineado</strong></td><td>1.5 puntos; simple dentro de tablas</td></tr>
+          <tr><td><strong style="color:#fff;">Alineación</strong></td><td>Texto justificado; un enter entre cada elemento</td></tr>
+          <tr><td><strong style="color:#fff;">Nivel 1</strong></td><td>14 pt · MAYÚSCULAS · negrita · izquierda</td></tr>
+          <tr><td><strong style="color:#fff;">Nivel 2</strong></td><td>12 pt · Mayúsc/minúsc · negrita · izquierda</td></tr>
+          <tr><td><strong style="color:#fff;">Nivel 3</strong></td><td>12 pt · Mayúsc/minúsc · cursiva + negrita</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="dv">
+
+    <!-- 1.1 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🏢 1.1 Contexto del Trabajo</h3>
+      <p class="bd">Describe la <strong>Unidad Productiva</strong> donde realizaste la estadía: nombre, antecedentes, sector, servicios, domicilio y área donde trabajaste.</p>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">La estadía profesional se llevó a cabo en <em>Soluciones Digitales Michoacán S.A. de C.V.</em>, empresa fundada en 2015 dedicada al desarrollo de software a medida para el sector comercial y de salud. Con domicilio en Av. Lázaro Cárdenas 340, Morelia, Michoacán, cuenta con 35 empleados. El estudiante fue asignado al Departamento de Desarrollo, bajo la supervisión del Ing. Carlos Ramírez Soto, Jefe de Proyectos.</div>
+      </div>
+      <div class="tip"><p>💡 Si usas información de la página web de la empresa, <strong>cítala en formato APA</strong>.</p></div>
+    </div>
+
+    <!-- 1.2 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🔍 1.2 Análisis de la Situación Actual</h3>
+      <p class="bd">Describe el problema o necesidad existente antes de tu intervención. Identifica <strong>fortalezas y debilidades</strong> de la situación y las causas que dan origen al proyecto.</p>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">Al iniciar la estadía, el área de almacén realizaba el control de inventarios manualmente mediante hojas de Excel. Este proceso generaba inconsistencias en los registros y tiempos de búsqueda promedio de 15 minutos por consulta. No existía un sistema centralizado que permitiera consultas en tiempo real, lo que dificultaba la toma de decisiones por parte del equipo directivo.</div>
+      </div>
+    </div>
+
+    <!-- 1.3 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🔀 1.3 Alternativas de Solución</h3>
+      <p class="bd">Presenta las opciones posibles consideradas para resolver la problemática y argumenta la elección final.</p>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej"><strong>Alternativa A:</strong> Adquirir un ERP comercial (SAP Business One). Desventaja: costo >$80,000 MXN y tiempo de implementación superior a 6 meses.<br><br><strong>Alternativa B:</strong> Adaptar Odoo (open-source). Desventaja: requiere conocimientos avanzados no disponibles en el equipo.<br><br><strong>Alternativa C (seleccionada):</strong> Desarrollar un sistema web con React.js y Node.js, adaptado exactamente a los procesos de la empresa, con costo bajo y plazo compatible con la estadía.</div>
+      </div>
+    </div>
+
+    <!-- 1.4 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🎯 1.4 Objetivos</h3>
+      <p class="bd">Siempre inician con <strong>verbo en infinitivo</strong>. Deben ser alcanzables, medibles, concretos y relevantes.</p>
+      <div class="two">
+        <div>
+          <h4 class="s4">🌐 Objetivo General</h4>
+          <p class="bd" style="font-size:.93rem;">Meta única y global del proyecto. Solo uno.</p>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Desarrollar un sistema web para la gestión de inventarios de Soluciones Digitales Michoacán S.A. de C.V., que permita automatizar el registro, consulta y control de existencias en tiempo real.</div>
+          </div>
+        </div>
+        <div>
+          <h4 class="s4">📋 Objetivos Específicos</h4>
+          <p class="bd" style="font-size:.93rem;">Lista de metas parciales. Cada una con verbo distinto.</p>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">1. Analizar los requerimientos funcionales y no funcionales del sistema.<br>2. Diseñar el modelo de base de datos relacional.<br>3. Implementar los módulos de registro y consulta.<br>4. Validar el sistema mediante pruebas con datos reales.</div>
+          </div>
+        </div>
+      </div>
+      <h4 class="s4">🔤 Verbos recomendados</h4>
+      <p class="bd">Analizar · Diseñar · Desarrollar · Implementar · Evaluar · Determinar · Establecer · Construir · Validar · Optimizar · Integrar · Automatizar · Documentar · Diagnosticar</p>
+    </div>
+
+    <!-- 1.5 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">📣 1.5 Justificación</h3>
+      <p class="bd">Expón las razones que motivaron el proyecto respondiendo:</p>
+      <ul class="ul">
+        <li>¿Qué elementos llevaron a seleccionar este proyecto?</li>
+        <li>¿En qué medida ofrecerá mejoras en la unidad productiva?</li>
+        <li>¿Cuáles serán sus aportes concretos y medibles?</li>
+      </ul>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">La implementación de un sistema automatizado responde a la necesidad de reducir errores que representan pérdidas estimadas en $12,000 MXN mensuales. El proyecto aportará un sistema que reducirá el tiempo de consulta de 15 minutos a menos de 30 segundos, mejorando la eficiencia del área en al menos un 60%. Además, dejará una base tecnológica escalable que la empresa podrá expandir a otros departamentos.</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="cta-btn" onclick="showTab('cap2')">Siguiente: Cap. II · Descripción del Trabajo →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: CAP II
+═══════════════════════════════════════ -->
+<div id="panel-cap2" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">🔬 Capítulo II</span>
+    <h2 class="st"><span class="n">II.</span> Descripción del Trabajo</h2>
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗓️ Semanas sugeridas de trabajo</h3>
+      <table>
+        <thead><tr><th>Semana</th><th>Avance recomendado</th><th>Producto esperado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Semanas 2–5</strong></td><td>Investigar conceptos, metodologías, herramientas y tecnologías del proyecto.</td><td>2.1 Bases teóricas con citas APA y referencias preliminares.</td></tr>
+          <tr><td><strong>Semanas 3–4</strong></td><td>Organizar actividades, fechas, responsables, recursos y dependencias.</td><td>2.2 Cronograma de actividades en formato Gantt.</td></tr>
+          <tr><td><strong>Semanas 4–5</strong></td><td>Definir lo que el sistema debe hacer y las condiciones de calidad esperadas.</td><td>2.3 Requerimientos funcionales y no funcionales.</td></tr>
+          <tr><td><strong>Semanas 5–7</strong></td><td>Representar el proceso, usuarios, módulos y flujo de información.</td><td>2.4 Diagramas que expliquen el proceso.</td></tr>
+          <tr><td><strong>Semanas 6–8</strong></td><td>Modelar entidades, relaciones, tablas, campos y reglas de datos.</td><td>2.5 Diseño de la base de datos.</td></tr>
+          <tr><td><strong>Semanas 8–10</strong></td><td>Agregar temas técnicos complementarios y revisar coherencia del capítulo.</td><td>2.6 Otros temas y Capítulo II completo para revisión.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2.1 BASES TEÓRICAS -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">📖 2.1 Bases Teóricas — Fundamento Teórico</h3>
+      <div class="info"><p>📏 <strong>Extensión:</strong> Hasta 5 cuartillas para TSU · <strong>10–15 páginas para Ingeniería</strong> cuando la complejidad lo amerita.</p></div>
+      <p class="bd">Explica los conceptos, teorías, metodologías y herramientas que sustentan tu proyecto. <strong>Todo lo que tomes de una fuente externa debe citarse en APA.</strong></p>
+
+      <h4 class="s4">📌 ¿Qué incluir?</h4>
+      <ul class="ul">
+        <li><strong>Conceptos fundamentales</strong> del dominio (API REST, base de datos relacional, IoT, seguridad, etc.)</li>
+        <li><strong>Metodología de desarrollo</strong> usada: Scrum, Kanban, RUP o Cascada, con sus fases</li>
+        <li><strong>Tecnologías y herramientas</strong> del stack, explicando qué son, cómo funcionan y por qué fueron seleccionadas</li>
+        <li><strong>Patrones de diseño</strong> aplicados (MVC, MVVM, Repository, etc.)</li>
+        <li><strong>Estándares</strong> seguidos (ISO, IEEE, WCAG, OWASP) si aplica</li>
+        <li>Para Ingeniería: <strong>estado del arte</strong> y trabajos relacionados</li>
+      </ul>
+
+      <div class="info"><p>📚 <strong>Regla de calidad para 2.1:</strong> cada concepto técnico debe tener una fuente confiable, una explicación con tus palabras y una relación directa con el proyecto. No basta con copiar definiciones de internet.</p></div>
+
+      <h4 class="s4">🧭 Preguntas que debe responder cada tecnología</h4>
+      <table>
+        <thead><tr><th>Pregunta guía</th><th>Qué debe redactar el alumno</th></tr></thead>
+        <tbody>
+          <tr><td><strong>¿Qué es?</strong></td><td>Definición clara con cita APA de una fuente confiable.</td></tr>
+          <tr><td><strong>¿Cómo funciona?</strong></td><td>Explicación del mecanismo principal, arquitectura o proceso básico.</td></tr>
+          <tr><td><strong>¿Cuáles son sus características técnicas?</strong></td><td>Funciones, componentes, requisitos, compatibilidad o forma de uso.</td></tr>
+          <tr><td><strong>¿Qué ventajas ofrece?</strong></td><td>Beneficios concretos para el desarrollo del proyecto.</td></tr>
+          <tr><td><strong>¿Por qué fue seleccionada?</strong></td><td>Justificación frente a alternativas posibles.</td></tr>
+          <tr><td><strong>¿Qué limitaciones tiene?</strong></td><td>Riesgos, restricciones o aspectos que se deben cuidar.</td></tr>
+          <tr><td><strong>¿Cómo se relaciona con las demás tecnologías?</strong></td><td>Conexión con base de datos, backend, frontend, API, servidor o metodología.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción mejorada</div>
+        <div class="apa-ej"><strong>Node.js.</strong> Node.js es un entorno de ejecución que permite utilizar JavaScript del lado del servidor y trabajar con operaciones de entrada y salida orientadas a eventos (Node.js Foundation, 2024). En este proyecto se empleó para construir el backend del sistema, ya que facilita la creación de servicios web y la atención de múltiples solicitudes de forma eficiente. Su principal ventaja fue la integración con Express.js y con el ecosistema de paquetes npm; sin embargo, se consideró necesario cuidar la validación de datos y el manejo de errores para evitar fallas en las rutas de la API.</div>
+      </div>
+
+      <div class="alerta"><p>⚠️ <strong>Evita esto:</strong> párrafos que solo dicen "Node.js es..." o "Express.js es..." sin cita, sin explicación propia y sin relación con el proyecto. El fundamento teórico debe demostrar comprensión, no acumulación de definiciones.</p></div>
+
+      <hr class="dv">
+
+      <!-- BLOQUE ESPECIAL: CÓMO CITAR EN 2.1 -->
+      <div style="background:var(--v);border-radius:12px;padding:24px 28px;margin-bottom:20px;">
+        <h3 class="sh" style="color:#fff;margin-top:0;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:14px;margin-bottom:18px;">
+          ✍️ ¿Cómo citar en el apartado 2.1?
+        </h3>
+        <p style="color:rgba(255,255,255,.9);font-size:1rem;font-weight:500;margin-bottom:18px;">Usa el sistema autor–año de APA dentro del texto. La cita no debe aparecer aislada: primero explica la idea, después intégrala al proyecto y finalmente conserva la referencia completa en la lista final.</p>
+
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;margin-bottom:14px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">🔎 Fuentes confiables para 2.1</div>
+          <table style="margin:0;font-size:.9rem;">
+            <thead><tr><th>Sí se recomienda</th><th>Evitar o usar solo como apoyo</th></tr></thead>
+            <tbody>
+              <tr><td>Libros académicos o técnicos</td><td>Blogs sin autor ni fecha</td></tr>
+              <tr><td>Artículos científicos o memorias de congreso</td><td>Wikipedia como fuente principal</td></tr>
+              <tr><td>Documentación oficial de tecnologías</td><td>Videos sin respaldo documental</td></tr>
+              <tr><td>Normas, manuales y sitios institucionales</td><td>Apuntes compartidos sin datos bibliográficos</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PARÁFRASIS -->
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;margin-bottom:14px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">💭 Paráfrasis (lo más común en 2.1)</div>
+          <p style="color:rgba(255,255,255,.85);font-size:.93rem;margin-bottom:10px;">Explicas la idea de otro autor con tus propias palabras. <strong style="color:#a8e6c0;">Siempre debes citar aunque no copies literalmente.</strong></p>
+          <div style="background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);border-radius:8px;padding:13px 16px;font-family:'Georgia',serif;font-size:.95rem;color:#e8f5ee;line-height:1.8;">
+            React.js permite construir interfaces mediante componentes reutilizables, lo que facilita separar la lógica visual en partes pequeñas y mantenibles (React Team, 2023). En el proyecto se seleccionó para desarrollar la interfaz del usuario porque permitió organizar formularios, tablas y vistas de consulta de manera modular.
+          </div>
+        </div>
+
+        <!-- CITA TEXTUAL CORTA -->
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;margin-bottom:14px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">💬 Cita textual corta — menos de 40 palabras</div>
+          <p style="color:rgba(255,255,255,.85);font-size:.93rem;margin-bottom:10px;">Copia exacta entre comillas. Autor, año y página obligatorios.</p>
+          <div style="background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);border-radius:8px;padding:13px 16px;font-family:'Georgia',serif;font-size:.95rem;color:#e8f5ee;line-height:1.8;">
+            Según Pressman (2014), "la ingeniería de software engloba un proceso, métodos para gestionar y desarrollar software y un conjunto de herramientas" (p. 15).
+          </div>
+        </div>
+
+        <!-- CITA TEXTUAL LARGA -->
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;margin-bottom:14px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">📄 Cita textual larga — 40 palabras o más</div>
+          <p style="color:rgba(255,255,255,.85);font-size:.93rem;margin-bottom:10px;">Párrafo aparte sin comillas, con sangría de 1.5 cm. La cita va al final del bloque.</p>
+          <div style="background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.3);border-radius:8px;padding:13px 16px 13px 36px;font-family:'Georgia',serif;font-size:.95rem;color:#e8f5ee;line-height:1.8;">
+            Scrum es un marco de trabajo para el desarrollo ágil basado en entregas incrementales llamadas sprints. Cada sprint dura de una a cuatro semanas y produce un incremento funcional del producto. El equipo se autoorganiza y toma decisiones colectivas, mientras que el Product Owner gestiona la lista de requisitos y el Scrum Master facilita el proceso. (Schwaber y Sutherland, 2020, p. 8)
+          </div>
+        </div>
+
+        <!-- CITA VARIOS AUTORES -->
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:18px 22px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">👥 Múltiples autores</div>
+          <table style="margin:0;font-size:.9rem;">
+            <thead><tr><th>Situación</th><th>Cita en el texto</th></tr></thead>
+            <tbody>
+              <tr><td>1 autor</td><td>(García, 2022)</td></tr>
+              <tr><td>2 autores</td><td>(García y Pérez, 2022)</td></tr>
+              <tr><td>3+ autores</td><td>(Ramírez et al., 2021)</td></tr>
+              <tr><td>Sin autor</td><td>(Primeras palabras del título, año)</td></tr>
+              <tr><td>Sin fecha</td><td>(García, s.f.)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="alerta"><p>⚠️ <strong>Obligatorio:</strong> Todo concepto tomado de una fuente debe citarse. Omitir la cita, aunque hayas parafraseado, constituye <strong>plagio académico</strong>.</p></div>
+
+      <div class="tip"><p>💡 <strong>Antes de entregar 2.1:</strong> revisa que cada tecnología tenga al menos una cita en el texto, que esa cita aparezca en Referencias y que el párrafo explique por qué esa tecnología aporta al proyecto.</p></div>
+
+      <h4 class="s4">📋 Estructura sugerida del fundamento teórico</h4>
+      <div class="steps">
+        <div class="si"><div class="sn"></div><div class="sb"><strong>Introducción al marco teórico</strong><p>Párrafo breve que indica qué temas se abordan y por qué son relevantes para el proyecto.</p></div></div>
+        <div class="si"><div class="sn"></div><div class="sb"><strong>Conceptos generales del dominio</strong><p>Define el área de aplicación: sistemas de información, comercio electrónico, IoT, seguridad. Cita autores reconocidos.</p></div></div>
+        <div class="si"><div class="sn"></div><div class="sb"><strong>Tecnologías y herramientas</strong><p>Describe cada tecnología: definición, características y por qué se eligió frente a alternativas.</p></div></div>
+        <div class="si"><div class="sn"></div><div class="sb"><strong>Metodología de desarrollo</strong><p>Explica la metodología adoptada, sus fases y artefactos, y cómo se aplicó al proyecto.</p></div></div>
+        <div class="si"><div class="sn"></div><div class="sb"><strong>Estado del arte (solo Ingeniería)</strong><p>Menciona proyectos similares o investigaciones previas que contextualizan tu solución.</p></div></div>
+      </div>
+
+      <div style="text-align:center;margin-top:20px;">
+        <button class="cta-btn" onclick="showTab('apa')">Ver todos los tipos de citas APA →</button>
+      </div>
+    </div>
+
+    <!-- 2.2 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">📅 2.2 Cronograma de Actividades</h3>
+      <ul class="ul">
+        <li>Usar preferentemente <strong>Diagrama de Gantt</strong></li>
+        <li>Incluir fechas de <strong>inicio y fin</strong> de cada actividad</li>
+        <li>Indicar <strong>recursos asignados</strong> a cada tarea</li>
+        <li>Señalar actividades <strong>predecesoras y sucesoras</strong></li>
+        <li>Cubrir desde el inicio hasta el fin de la estadía completa</li>
+      </ul>
+      <h4 class="s4">📊 Ejemplo visual de Diagrama de Gantt por semanas</h4>
+      <div class="gantt" aria-label="Ejemplo de Diagrama de Gantt por semanas">
+        <div class="gh">Actividad</div><div class="gh">S1</div><div class="gh">S2</div><div class="gh">S3</div><div class="gh">S4</div><div class="gh">S5</div><div class="gh">S6</div><div class="gh">S7</div><div class="gh">S8</div><div class="gh">S9</div><div class="gh">S10</div><div class="gh">S11</div><div class="gh">S12</div>
+        <div class="gtask">Diagnóstico</div><div class="bar" style="grid-column:2 / span 2;">S1–S2</div><div class="empty" style="grid-column:4 / span 10;"></div>
+        <div class="gtask">Bases teóricas</div><div class="empty" style="grid-column:2 / span 1;"></div><div class="bar" style="grid-column:3 / span 4;">S2–S5</div><div class="empty" style="grid-column:7 / span 7;"></div>
+        <div class="gtask">Requerimientos</div><div class="empty" style="grid-column:2 / span 3;"></div><div class="bar" style="grid-column:5 / span 2;">S4–S5</div><div class="empty" style="grid-column:7 / span 7;"></div>
+        <div class="gtask">Diagramas y BD</div><div class="empty" style="grid-column:2 / span 4;"></div><div class="bar" style="grid-column:6 / span 3;">S5–S7</div><div class="empty" style="grid-column:9 / span 5;"></div>
+        <div class="gtask">Desarrollo y pruebas</div><div class="empty" style="grid-column:2 / span 6;"></div><div class="bar" style="grid-column:8 / span 4;">S7–S10</div><div class="empty" style="grid-column:12 / span 2;"></div>
+        <div class="gtask">Resultados</div><div class="empty" style="grid-column:2 / span 10;"></div><div class="bar" style="grid-column:12 / span 2;">S11–S12</div>
+      </div>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">El cronograma de actividades se organizó en 12 semanas. Durante las primeras dos semanas se realizó el diagnóstico de la situación actual; de la semana 2 a la 5 se desarrolló el fundamento teórico; entre las semanas 4 y 5 se definieron los requerimientos; de la semana 5 a la 7 se elaboraron los diagramas y el diseño de base de datos; finalmente, de la semana 7 a la 10 se llevó a cabo el desarrollo y las pruebas del sistema.</div>
+      </div>
+      <div class="info"><p>⏱️ <strong>Redacción:</strong> el cronograma puede explicarse en presente si describe la organización del plan, pero las actividades realizadas en 2.3 deben redactarse en pasado.</p></div>
+      <div class="tip"><p>💡 <strong>Herramientas:</strong> Microsoft Project · GanttProject (gratuito) · Trello con vista de línea de tiempo · Tabla Word/Excel con columnas requeridas.</p></div>
+      <button class="mini-link" onclick="showTab('tiempos')">Ver tiempos verbales</button>
+    </div>
+
+    <!-- 2.3 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">📋 2.3 Requerimientos Funcionales y No Funcionales</h3>
+      <p class="bd">Describe qué debe hacer el sistema y bajo qué condiciones debe funcionar. Los requerimientos deben ser claros, medibles y verificables.</p>
+      <table>
+        <thead><tr><th>Tipo</th><th>Ejemplo</th><th>Cómo redactarlo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Funcional</strong></td><td>RF-01 Registro de productos</td><td>El sistema debe permitir registrar productos con nombre, categoría, precio, existencia y proveedor.</td></tr>
+          <tr><td><strong>Funcional</strong></td><td>RF-02 Consulta de inventario</td><td>El sistema debe permitir buscar productos por nombre, código o categoría.</td></tr>
+          <tr><td><strong>No funcional</strong></td><td>RNF-01 Rendimiento</td><td>Las consultas de inventario deben responder en un tiempo máximo de tres segundos.</td></tr>
+          <tr><td><strong>No funcional</strong></td><td>RNF-02 Seguridad</td><td>El sistema debe permitir el acceso solo a usuarios autenticados con rol autorizado.</td></tr>
+        </tbody>
+      </table>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">Los requerimientos funcionales se obtuvieron mediante entrevistas con el jefe de almacén y el personal operativo. Se identificó que el sistema debía permitir registrar productos, consultar existencias, actualizar movimientos de entrada y salida, y generar reportes básicos. Además, se definieron requerimientos no funcionales relacionados con seguridad, tiempo de respuesta y facilidad de uso.</div>
+      </div>
+    </div>
+
+    <!-- 2.4 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🧩 2.4 Diagramas que Expliquen el Proceso</h3>
+      <p class="bd">Incluye diagramas que ayuden al lector a comprender cómo funciona el proceso o sistema. No deben ser decorativos: cada diagrama debe explicar una parte importante del proyecto.</p>
+      <ul class="ul">
+        <li><strong>Diagrama de flujo:</strong> muestra pasos del proceso antes y después de la solución.</li>
+        <li><strong>Casos de uso:</strong> identifica actores y funciones principales del sistema.</li>
+        <li><strong>Diagrama de arquitectura:</strong> explica la relación entre frontend, backend, base de datos y servicios externos.</li>
+        <li><strong>Diagrama de proceso:</strong> representa entradas, actividades, decisiones y salidas.</li>
+      </ul>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">La Figura 2.3 muestra el proceso de registro de productos. El usuario inicia sesión, captura los datos del producto, el sistema valida los campos obligatorios y posteriormente almacena la información en la base de datos. Si algún dato es incorrecto, el sistema muestra un mensaje de error y solicita la corrección antes de guardar el registro.</div>
+      </div>
+      <div class="tip"><p>💡 Todo diagrama debe tener título antes de la imagen y fuente debajo: <em>Elaboración propia</em> si fue creado por el estudiante.</p></div>
+    </div>
+
+    <!-- 2.5 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗄️ 2.5 Diseño de la Base de Datos</h3>
+      <p class="bd">Explica cómo se organizan los datos del sistema. Debe incluir el modelo entidad-relación o diagrama relacional y, si es necesario, una breve descripción de las tablas principales.</p>
+      <table>
+        <thead><tr><th>Tabla</th><th>Propósito</th><th>Campos principales</th></tr></thead>
+        <tbody>
+          <tr><td><strong>productos</strong></td><td>Almacenar información de los productos registrados.</td><td>id_producto, nombre, categoria, precio, existencia</td></tr>
+          <tr><td><strong>proveedores</strong></td><td>Registrar datos de los proveedores.</td><td>id_proveedor, nombre, telefono, correo</td></tr>
+          <tr><td><strong>movimientos</strong></td><td>Controlar entradas y salidas de inventario.</td><td>id_movimiento, tipo, fecha, cantidad, id_producto</td></tr>
+        </tbody>
+      </table>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">La base de datos se diseñó bajo un modelo relacional debido a que la información del inventario requiere consistencia entre productos, proveedores y movimientos. La tabla productos almacena los datos generales de cada artículo, mientras que la tabla movimientos registra las entradas y salidas asociadas a cada producto mediante una llave foránea.</div>
+      </div>
+    </div>
+
+    <!-- 2.6 -->
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">➕ 2.6 Otros Temas que se Quieran Incluir</h3>
+      <p class="bd">Este apartado es opcional y permite documentar elementos técnicos relevantes que no encajan en los apartados anteriores, siempre que aporten claridad al proyecto.</p>
+      <div class="cgrid">
+        <div class="csm"><div class="ico">🔐</div><h4>Seguridad</h4><p>Autenticación, roles, permisos, validación de datos o cifrado.</p></div>
+        <div class="csm"><div class="ico">🧪</div><h4>Pruebas</h4><p>Pruebas unitarias, funcionales, de usuario o rendimiento.</p></div>
+        <div class="csm"><div class="ico">🌐</div><h4>API</h4><p>Rutas, endpoints, métodos HTTP y estructura de respuestas.</p></div>
+        <div class="csm"><div class="ico">🚀</div><h4>Despliegue</h4><p>Servidor, hosting, variables de entorno y configuración final.</p></div>
+      </div>
+      <div class="info"><p>📌 <strong>Criterio:</strong> incluye solo temas que el proyecto realmente usó. Si agregas seguridad, pruebas o API, explica cómo se aplicaron y muestra evidencia.</p></div>
+    </div>
+
+    <!-- FIGURAS Y TABLAS -->
+    <hr class="dv">
+    <h3 class="sh">🖼️ Cómo insertar Figuras y Tablas</h3>
+    <div class="two">
+      <div class="card">
+        <h4 class="s4">🖼️ Figura</h4>
+        <p class="bd" style="font-size:.93rem;"><strong>Antes:</strong> Figura X.X Descripción<br><strong>Debajo:</strong> Fuente: referencia o <em>Elaboración propia.</em></p>
+        <div class="apa-w">
+          <div class="apa-lbl">Ejemplo</div>
+          <div class="apa-ej">Figura 2.1 Arquitectura del sistema de inventarios<br>[imagen]<br><em>Elaboración propia.</em></div>
+        </div>
+      </div>
+      <div class="card">
+        <h4 class="s4">📊 Tabla</h4>
+        <p class="bd" style="font-size:.93rem;"><strong>Antes:</strong> Tabla X.X Descripción<br><strong>Debajo:</strong> Fuente: referencia o <em>Elaboración propia.</em></p>
+        <div class="apa-w">
+          <div class="apa-lbl">Ejemplo</div>
+          <div class="apa-ej">Tabla 2.1 Requerimientos funcionales del sistema<br>[tabla]<br><em>Elaboración propia.</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="cta-btn" onclick="showTab('cap3')">Siguiente: Cap. III · Resultados →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: CAP III
+═══════════════════════════════════════ -->
+<div id="panel-cap3" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">🏆 Capítulo III + Conclusiones</span>
+    <h2 class="st"><span class="n">III.</span> Resultados y Conclusiones</h2>
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🗓️ Semanas sugeridas de trabajo</h3>
+      <table>
+        <thead><tr><th>Semana</th><th>Avance recomendado</th><th>Producto esperado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Semanas 10–11</strong></td><td>Reunir evidencias del producto final: capturas, pruebas, métricas y validaciones.</td><td>Capítulo III con resultados documentados.</td></tr>
+          <tr><td><strong>Semana 12</strong></td><td>Relacionar resultados con objetivos y describir el impacto del proyecto.</td><td>Resultados revisados y alineados al Capítulo I.</td></tr>
+          <tr><td><strong>Última semana</strong></td><td>Redactar conclusiones, recomendaciones, anexos y revisar referencias finales.</td><td>Conclusiones, referencias y anexos listos para entrega.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">🏆 Capítulo III · Resultados</h3>
+      <p class="bd">Es la <strong>parte más relevante del documento</strong>: la evidencia tangible del proyecto. Demuestra el cumplimiento de los objetivos planteados en el Capítulo I.</p>
+      <div class="info"><p>📏 No hay límite fijo de extensión. Se espera que sea el capítulo <strong>más largo del reporte</strong>.</p></div>
+      <h4 class="s4">🗂️ ¿Qué incluir?</h4>
+      <ul class="ul">
+        <li>Capturas de pantalla o fotografías del sistema terminado, con título y fuente</li>
+        <li>Descripción funcional de cada módulo o componente entregado</li>
+        <li>Pruebas realizadas y evidencias de funcionamiento correcto</li>
+        <li>Comparativa entre objetivo planteado y logro obtenido</li>
+        <li>Métricas de desempeño (tiempo de respuesta, número de usuarios, registros procesados)</li>
+        <li>Manuales de usuario o técnicos (pueden ir en Anexos si son extensos)</li>
+      </ul>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">El sistema de gestión de inventarios fue implementado exitosamente y puesto en operación el 15 de octubre de 2024. Como se muestra en la Figura 3.1, el módulo de registro permite dar de alta productos mediante un formulario con validación en tiempo real. Las pruebas de carga realizadas con 50 usuarios simultáneos arrojaron un tiempo de respuesta promedio de 1.2 segundos, cumpliendo con el requerimiento no funcional RF-04 que establece un máximo de 3 segundos.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="sh" style="margin-top:0;">💬 Conclusiones</h3>
+      <p class="bd">Redacta entre <strong>1 y 2 cuartillas</strong>. No es un resumen del documento; son las reflexiones, implicaciones y aprendizajes más importantes.</p>
+      <div class="cgrid">
+        <div class="csm"><div class="ico">✅</div><h4>Logros obtenidos</h4><p>¿Se cumplieron los objetivos? ¿Qué impacto tuvo el proyecto en la empresa?</p></div>
+        <div class="csm"><div class="ico">📚</div><h4>Experiencia adquirida</h4><p>¿Qué aprendiste durante la estadía? ¿Cómo complementó tu formación?</p></div>
+        <div class="csm"><div class="ico">🔮</div><h4>Recomendaciones</h4><p>¿Qué pueden mejorar futuras generaciones? ¿Qué trabajo queda pendiente?</p></div>
+      </div>
+      <div class="apa-w">
+        <div class="apa-lbl">✏️ Ejemplo de redacción</div>
+        <div class="apa-ej">El objetivo general del proyecto fue alcanzado satisfactoriamente: se desarrolló e implementó un sistema web de gestión de inventarios que automatizó por completo el proceso de registro y consulta de existencias en Soluciones Digitales Michoacán. Los cuatro objetivos específicos fueron cumplidos en su totalidad dentro del plazo establecido en el cronograma.<br><br>La experiencia en la estadía permitió aplicar en un entorno real los conocimientos adquiridos en las materias de Desarrollo Web, Bases de Datos y Metodologías Ágiles. Se recomienda a futuras generaciones documentar desde el primer día todas las decisiones técnicas tomadas, ya que esto facilita considerablemente la redacción del Capítulo II.</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="cta-btn" onclick="showTab('apa')">Siguiente: Citas y Referencias APA →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: APA
+═══════════════════════════════════════ -->
+<div id="panel-apa" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">✍️ APA 7.ª edición</span>
+    <h2 class="st">Citas y Referencias Bibliográficas</h2>
+    <p class="bd">Formato obligatorio en el Reporte de Estadía. Sistema <strong>autor–año</strong> en el texto; lista alfabética al final del documento.</p>
+    <div class="info"><p>📌 <strong>Regla fundamental:</strong> Toda cita en el texto debe tener su entrada en Referencias, y toda entrada en Referencias debe estar citada en el texto.</p></div>
+
+    <!-- CITAS EN TEXTO -->
+    <div class="ab">
+      <div class="ab-head"><div class="ico">📝</div><div><h3>Citas dentro del texto</h3><p>Paráfrasis, citas textuales cortas y largas</p></div></div>
+      <div class="ab-body">
+        <div class="aeb">
+          <div class="aeb-lbl">💭 Paráfrasis — la más usada en bases teóricas</div>
+          <div class="aeb-desc">Idea del autor expresada con tus palabras. Sin comillas, pero con cita obligatoria.</div>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">La ingeniería de software abarca desde la especificación de requerimientos hasta el mantenimiento posterior a la liberación del sistema (Sommerville, 2011, p. 5).</div>
+          </div>
+        </div>
+        <div class="aeb">
+          <div class="aeb-lbl">💬 Cita textual corta — menos de 40 palabras</div>
+          <div class="aeb-desc">Dentro del párrafo, entre comillas. Autor, año y número de página obligatorios.</div>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Pressman (2014) afirma que "la ingeniería de software engloba un proceso, métodos para gestionar y desarrollar software y un conjunto de herramientas" (p. 15).</div>
+          </div>
+        </div>
+        <div class="aeb">
+          <div class="aeb-lbl">📄 Cita textual larga — 40 palabras o más</div>
+          <div class="aeb-desc">Párrafo aparte, sin comillas, con sangría 1.5 cm. Cita al final del bloque.</div>
+          <div class="img-cite">
+            <div class="ico">📄</div>
+            <div class="img-cite-t"><strong>Cómo se ve en Word</strong><p>El texto va en bloque separado del párrafo anterior, con sangría en todo el bloque, sin comillas. La referencia (Autor, año, p. #) va pegada al cierre del bloque, fuera de las comillas que no existen.</p></div>
+          </div>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej" style="padding-left:32px;">Scrum es un marco de trabajo ágil que organiza el desarrollo en sprints de una a cuatro semanas, al final de los cuales se entrega un incremento funcional del producto. El equipo se autoorganiza para decidir cómo lograr los objetivos del sprint, mientras que el Product Owner prioriza el backlog y el Scrum Master elimina impedimentos. Este enfoque favorece la adaptación continua a los cambios del entorno. (Schwaber y Sutherland, 2020, p. 8)</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Situación</th><th>Cita en el texto</th></tr></thead>
+          <tbody>
+            <tr><td>1 autor</td><td>(García, 2022) o García (2022)</td></tr>
+            <tr><td>2 autores</td><td>(García y Pérez, 2022)</td></tr>
+            <tr><td>3 o más autores</td><td>(Ramírez et al., 2021)</td></tr>
+            <tr><td>Institución</td><td>(INEGI, 2023) — primera vez nombre completo</td></tr>
+            <tr><td>Sin autor</td><td>(Primeras palabras del título, año)</td></tr>
+            <tr><td>Sin fecha</td><td>(García, s.f.)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LISTA REFERENCIAS -->
+    <div class="ab">
+      <div class="ab-head"><div class="ico">📚</div><div><h3>Lista de Referencias</h3><p>Formato de cada tipo de fuente con ejemplos reales</p></div></div>
+      <div class="ab-body">
+        <p class="bd"><strong>Reglas:</strong> orden alfabético por apellido · sangría francesa (primera línea izquierda, siguientes con sangría) · doble espacio entre entradas · cursiva en título del libro o nombre de la revista.</p>
+
+        <div class="aeb">
+          <div class="aeb-lbl">📗 Libro impreso</div>
+          <div class="apa-w">
+            <div class="apa-lbl">Formato</div>
+            <div class="apa-fmt">Apellido, N. N. (Año). <em>Título del libro</em> (# ed.). Editorial.</div>
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Sommerville, I. (2011). <em>Ingeniería del software</em> (9.ª ed.). Pearson Educación.</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">🌐 Libro electrónico</div>
+          <div class="apa-w">
+            <div class="apa-lbl">Formato</div>
+            <div class="apa-fmt">Apellido, N. N. (Año). <em>Título del libro</em>. Recuperado de https://...</div>
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Cobo, C., y Moravec, J. W. (2011). <em>Aprendizaje invisible: hacia una nueva ecología de la educación</em>. Recuperado de http://www.aprendizajeinvisible.com/download/AprendizajeInvisible.pdf</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">📰 Artículo de revista con DOI</div>
+          <div class="img-cite">
+            <div class="ico">🔍</div>
+            <div class="img-cite-t"><strong>¿Dónde encuentro el DOI?</strong><p>En la primera página del artículo, cabecera o pie, con formato 10.XXXX/XXXXX. También en Scopus, IEEE Xplore, SciELO o buscando en doi.org.</p></div>
+          </div>
+          <div class="apa-w">
+            <div class="apa-lbl">Formato</div>
+            <div class="apa-fmt">Apellido, N. N., y Apellido, N. N. (Año). Título del artículo. <em>Nombre de la Revista, V</em>(N), pp–pp. https://doi.org/xxxxx</div>
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">García López, L. A., y Pérez Ruiz, M. (2022). Arquitecturas de microservicios en aplicaciones web escalables. <em>Revista Iberoamericana de Tecnología, 14</em>(2), 45–62. https://doi.org/10.1234/rit.2022.14.2.45</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">🔗 Página web</div>
+          <div class="img-cite">
+            <div class="ico">🌐</div>
+            <div class="img-cite-t"><strong>¿Cómo identificar el autor?</strong><p>Busca en: sección "Acerca de", pie de página, cabecera del artículo. Si no hay autor personal, usa el nombre de la organización. Sin fecha → escribe (s.f.).</p></div>
+          </div>
+          <div class="apa-w">
+            <div class="apa-lbl">Formato</div>
+            <div class="apa-fmt">Apellido, N. N. (Año). <em>Título de la página</em>. Recuperado el día de mes de año, de https://...</div>
+            <div class="apa-lbl">✏️ Ejemplo — documentación técnica</div>
+            <div class="apa-ej">React Team. (2023). <em>React – A JavaScript library for building user interfaces</em>. Recuperado el 10 de enero de 2024, de https://react.dev</div>
+            <div class="apa-lbl">✏️ Ejemplo — institución oficial</div>
+            <div class="apa-ej">Instituto Nacional de Estadística y Geografía. (2023). <em>Encuesta Nacional sobre Disponibilidad y Uso de Tecnologías de la Información en los Hogares 2022</em>. Recuperado el 5 de marzo de 2024, de https://www.inegi.org.mx/programas/dutih/2022/</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">🎓 Tesis / Reporte de estadía</div>
+          <div class="apa-w">
+            <div class="apa-lbl">Formato</div>
+            <div class="apa-fmt">Apellido, N. N. (Año). <em>Título del trabajo</em> (Tipo de trabajo). Universidad.</div>
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Martínez Ruiz, A. (2023). <em>Sistema de gestión de inventarios con código QR para PyMEs</em> (Reporte Técnico de Estadía). Universidad Tecnológica de Morelia.</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">🎬 Video en YouTube</div>
+          <div class="apa-w">
+            <div class="apa-lbl">Formato</div>
+            <div class="apa-fmt">Canal o Autor. (Año). <em>Título del video</em> [Vídeo]. YouTube. https://...</div>
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Fireship. (2022). <em>React in 100 seconds</em> [Vídeo]. YouTube. https://www.youtube.com/watch?v=Tn6-PIqc4UM</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">📋 Documentación técnica / Framework</div>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">Node.js Foundation. (2024). <em>Node.js v20 documentation</em>. Recuperado el 15 de febrero de 2024, de https://nodejs.org/en/docs</div>
+          </div>
+        </div>
+
+        <div class="aeb">
+          <div class="aeb-lbl">📜 Norma técnica (ISO, IEEE)</div>
+          <div class="apa-w">
+            <div class="apa-lbl">✏️ Ejemplo</div>
+            <div class="apa-ej">International Organization for Standardization. (2011). <em>Systems and software quality models</em> (ISO/IEC 25010:2011). ISO.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: PLAGIO
+═══════════════════════════════════════ -->
+<div id="panel-plagio" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">🛡️ Integridad académica</span>
+    <h2 class="st">Evitar el Plagio Académico</h2>
+    <p class="bd">El plagio no es solo copiar texto. Existen múltiples formas, algunas involuntarias, que igualmente constituyen una falta académica grave.</p>
+
+    <div class="two">
+      <div class="card" style="border-color:#f5bfbf;background:#fff9f9;">
+        <h3 class="sh" style="color:var(--r);margin-top:0;">❌ Conductas que son plagio</h3>
+        <ul class="ul">
+          <li>Copiar y pegar de internet sin citar</li>
+          <li>Parafrasear sin mencionar al autor</li>
+          <li>Presentar ideas ajenas como propias</li>
+          <li>Copiar código sin indicar fuente</li>
+          <li>Reutilizar tu propio trabajo sin citarlo (<strong>autoplagio</strong>)</li>
+          <li>Traducir un texto extranjero sin citar el original</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:var(--vb);background:var(--vs);">
+        <h3 class="sh" style="margin-top:0;">✅ Cómo evitarlo</h3>
+        <ul class="ul">
+          <li>Cita toda idea ajena aunque la hayas parafraseado</li>
+          <li>Usa comillas y página en citas textuales</li>
+          <li>Toma notas de fuentes mientras lees</li>
+          <li>Usa Zotero o Mendeley (gestores gratuitos)</li>
+          <li>Cuando haya duda: cita siempre</li>
+        </ul>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>⚠️ Tipo</th><th>🔍 Descripción</th><th>📋 Consecuencia</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Copia directa</strong></td><td>Texto sin comillas ni cita</td><td>Reprobación / anulación</td></tr>
+        <tr><td><strong>Paráfrasis sin cita</strong></td><td>Cambiar palabras sin atribuir autoría</td><td>Corrección requerida</td></tr>
+        <tr><td><strong>Autoplagio</strong></td><td>Reutilizar propio trabajo</td><td>Falta académica grave</td></tr>
+        <tr><td><strong>Plagio de código</strong></td><td>Código ajeno sin indicar fuente</td><td>Reprobación del módulo</td></tr>
+        <tr><td><strong>Compra de trabajo</strong></td><td>Trabajo elaborado por otro</td><td>Expulsión / cancelación de título</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info"><p>💡 <strong>Consejo:</strong> Mientras lees una fuente, escribe con tus propias palabras lo que entendiste <em>antes</em> de releer el original. Así tu paráfrasis será genuina.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL: CHECKLIST
+═══════════════════════════════════════ -->
+<div id="panel-checklist" class="panel">
+  <div class="panel-body">
+    <span class="sec-label">✅ Revisión final</span>
+    <h2 class="st">Checklist — Antes de Entregar</h2>
+    <p class="bd">Marca cada punto al verificarlo. El progreso se actualiza en tiempo real.</p>
+
+    <div style="background:var(--vs);border:1px solid var(--vb);border-radius:12px;padding:20px 24px;margin-bottom:32px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:1.05rem;font-weight:700;color:var(--v);">📊 Progreso de revisión</span>
+        <span id="chk-count" style="font-size:1.15rem;font-weight:800;color:var(--v);">0 / 31</span>
+      </div>
+      <div style="background:#c2e0ce;border-radius:10px;height:16px;overflow:hidden;">
+        <div id="chk-bar" style="background:var(--v);height:100%;width:0%;transition:width .3s;border-radius:10px;"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 class="s4">📁 Archivo y Configuración</h4>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct"><strong>Nombre del archivo:</strong> Matricula_ApellidoPaterno_ApellidoMaterno_Nombre(s).pdf</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Márgenes de <strong>2.54 cm</strong> en todas las páginas</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Interlineado <strong>1.5 puntos</strong> en todo el cuerpo del texto</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Texto <strong>justificado</strong> en todo el documento</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Salto de línea entre secciones, figuras y tablas</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Se generaron <strong>4 copias PDF</strong> para cada destinatario</div></div>
+    </div>
+
+    <div class="card">
+      <h4 class="s4">🗂️ Estructura Completa</h4>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Portada con <strong>logotipo de la empresa</strong>, nombre del proyecto, estudiante, asesores y fecha</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Índice General con <strong>páginas actualizadas</strong> y sangría por nivel</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Índice de Figuras completo (si hay figuras)</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Índice de Tablas completo (si hay tablas)</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Resumen / Abstract como <strong>Página 1</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Tiempos verbales revisados: presente, pasado e infinitivo se usaron según la sección</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Capítulo I completo: apartados 1.1 a 1.5</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Capítulo II completo: bases teóricas, Gantt, requerimientos, diagramas, base de datos y temas adicionales</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Capítulo III con evidencias del producto final</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Conclusiones (1 a 2 páginas)</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Lista de Referencias en <strong>APA 7.ª edición</strong>, orden alfabético</div></div>
+    </div>
+
+    <div class="card">
+      <h4 class="s4">✍️ Citas y Referencias</h4>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Todas las ideas ajenas están <strong>citadas</strong> con autor y año</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Citas textuales cortas llevan <strong>comillas y página</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Citas textuales largas (40+ palabras) en párrafo aparte con sangría</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Cada cita tiene su entrada en la lista de <strong>Referencias</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Referencias con <strong>sangría francesa</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">No se usó Wikipedia como fuente primaria</div></div>
+    </div>
+
+    <div class="card">
+      <h4 class="s4">🖼️ Figuras y Tablas</h4>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Cada figura tiene <strong>título antes</strong> y <strong>fuente debajo</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Cada tabla tiene <strong>título antes</strong> y <strong>fuente debajo</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Números de figuras/tablas <strong>consecutivos por capítulo</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Índices de figuras/tablas coinciden con páginas reales</div></div>
+    </div>
+
+    <div class="card">
+      <h4 class="s4">📑 Paginación y Encabezados</h4>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">La portada <strong>no tiene número</strong> de página</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Los índices <strong>no tienen número</strong> de página</div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Desde Resumen: numeración con la palabra <strong>"Página"</strong></div></div>
+      <div class="chi"><div class="cb" onclick="toggleCk(this)"></div><div class="ct">Cada cuartilla tiene <strong>línea gráfica</strong> en encabezado y pie</div></div>
+    </div>
+
+    <div id="listo-msg" style="display:none;background:var(--v);border-radius:14px;padding:32px;margin-top:24px;text-align:center;">
+      <p style="font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:10px;">🎉 ¡Reporte listo para entregar!</p>
+      <p style="color:rgba(255,255,255,.9);font-size:1.05rem;font-weight:500;">Has verificado todos los puntos. Genera tus 4 PDFs y entrega en los plazos indicados. ¡Éxito en tu titulación!</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Universidad Tecnológica de Morelia</strong> · Subdirección de Tecnologías de Información y Comunicación<br>
+  <span style="font-size:.82rem;">Basado en: <em>Estructura del Reporte Técnico de Estadía UTM 2025</em> · <em>Evitar el Plagio: APA para Citas y Referencias</em> (Universidad de Sevilla, 2019)<br>
+  Ingeniería de Desarrollo y Gestión de Software · Material de apoyo académico para uso interno</span>
+</footer>
+
+<script>
+function showTab(id) {
+  var panels = document.querySelectorAll('.panel');
+  var btns   = document.querySelectorAll('.tab-btn');
+  panels.forEach(function(p){ p.classList.remove('active'); });
+  btns.forEach(function(b){ b.classList.remove('active'); });
+  var p = document.getElementById('panel-' + id);
+  if(p){ p.classList.add('active'); }
+  var btn = document.querySelector('[data-tab="' + id + '"]');
+  if(btn){ btn.classList.add('active'); }
+  window.scrollTo({top: 0, behavior:'smooth'});
+}
+
+window.addEventListener('scroll', function(){
+  var d = document.documentElement;
+  var pct = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100 || 0;
+  document.getElementById('prog').style.width = pct + '%';
+});
+
+var CHK_TOTAL = 31;
+function toggleCk(el){
+  el.classList.toggle('done');
+  el.innerHTML = el.classList.contains('done') ? '&#10003;' : '';
+  var done = document.querySelectorAll('.cb.done').length;
+  document.getElementById('chk-count').textContent = done + ' / ' + CHK_TOTAL;
+  document.getElementById('chk-bar').style.width = (done / CHK_TOTAL * 100) + '%';
+  document.getElementById('listo-msg').style.display = (done === CHK_TOTAL) ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
